@@ -1,0 +1,9 @@
+#+title: Programación
+#+author: Miguel Piña
+#+date: [2017-02-12 dom 09:26]
+
+Repositorio para el material del curso de Programación.
+
+- Asignatura :: Programación
+- Profesora :: Maria Fernanda Sanchez Puig
+- Ayudante :: Miguel Angel Piña Avelino
