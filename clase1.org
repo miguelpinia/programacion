@@ -26,7 +26,7 @@ elementos:
 #+begin_src python :results output
   #!/usr/bin/python3         # Línea de inicialización
 
-  "Módulo de ejemplo"        # Documentación del script
+  """Módulo de ejemplo"""        # Documentación del script
 
   import sys                 # Módulos importados
   import os
@@ -239,7 +239,7 @@ send('Hello', 'World', cc='Cthulhu', bcc='God').
 
 *** Lista de argumentos arbitrarios
 
-Ajustemos de nuevo la función a _send(message, recipients)_
+Ajustemos de nuevo la función a _send(message, *recipients)_
 
 *Mala idea*
 
