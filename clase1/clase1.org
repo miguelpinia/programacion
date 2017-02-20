@@ -262,6 +262,8 @@ a proveer dos elementos para cada iteración en la lista.
 #+begin_src python
   for index, element in enumerate(some_list):
       # do something with index and element
+
+  a, b = (1, 2)
 #+end_src
 
 También puede ser utilizado para intercambiar valores entre dos variables:
@@ -296,6 +298,9 @@ four_nones = [None] * 4
 print(four_nones)
 #+end_src
 
+#+RESULTS:
+: [None, None, None, None]
+
 ** Crear una lista de listas de tamaño N
 
 #+begin_src python :results output
@@ -317,6 +322,9 @@ print(four_lists)
 #+begin_src python
 s = set(['s', 'p', 'a', 'm'])
 l = ['s', 'p', 'a', 'm']
+
+def lookup(s):
+    return 's' in s
 
 def lookup_set(s):
     return 's' in s
