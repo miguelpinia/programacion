@@ -82,13 +82,12 @@ Hint: Si su diseno tiene más de 10 clases, piensenlo otra vez.
 
 * Entregables
 
-Deberán entregar un archivo llamado <NombreApellido>-tarea1.pdf y enviarlo al
-correo fernanda@ciencias.unam.mx con Subject: "Programacion T1"
+Deberán entregar dos archivos llamados <NombreApellido>-tarea1.{tex, pdf} y
+enviarlo al correo fernanda@ciencias.unam.mx con Subject: "Programacion T1"
 
 * Fecha de entrega
 
 01 de Marzo 2017
-
 * Notas
 
 Notas:
