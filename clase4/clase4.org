@@ -1,0 +1,239 @@
+#+title: Clase 4
+#+author: Miguel Piña
+#+date: [2017-02-25 sáb 20:45]
+
+* Zen de python
+
+Hace un par de días, los chicos de hacktoon, liberaron una imagen sobre el [[http://hacktoon.com/log/2016/the-zen-of-python-illustrated/][zen
+de python]], el cuál está muy divertido.
+
+* ¿Qué es un módulo?
+
+En python, cada uno de los archivos .py que definimos
+se le denominan *módulos*, estos a su vez, pueden formar
+parte de una paquete.
+
+Un módulo es una archivo conteniendo definiciones y
+declaraciones de Python. El nombre del archivo es el
+nombre del módulo con el sufijo .py agregado. Dentro de
+un módulo, el nombre del mismo (como una cadena) está
+disponible en el valor de la variable global
+*__name__*.
+
+
+* Ejemplo
+
+Escribir un archivo llamada *fibo.py* en el directorio de
+tu elección, con el siguiente código:
+
+#+BEGIN_SRC python
+#!/usr/bin/env python3
+
+def fib(n):
+    """Escribe la serie fibonacci desde 1 hasta n"""
+    a, b = 0, 1
+    while b < n:
+        print(b)
+        a, b = b, a+b
+
+def fib2(n):
+    """Devuelve la serie de Fibonacci hasta n dentro
+       de un arreglo."""
+    resultado = []
+    a, b = 0, 1
+    while b < n:
+        resultado.append(b)
+        a, b = b, a+b
+    return resultado
+#+END_SRC
+
+Posteriormente abrir un intérprete de python en el
+mismo directorio de python y ejecutar
+
+
+#+begin_src python
+import fibo
+fibo.fib(1000)
+fibo.fib2(1000)
+fibo.__name__
+#+end_src
+
+* Más sobre módulos
+
+Un módulo puede contener tanto declaraciones
+ejecutables como definiciones de funciones. Estas
+declaraciones están pensadas para ejecutarse al
+inicializar el módulo, es decir, se ejecutan solamente
+la primera vez que el módulo se importa en algún lado.
+
+Cada módulo tiene su propio espacio de nombres, el que
+es usado como espacio de nombres global por todas las
+funciones definidas en el módulo. Por lo tanto, el
+autor de un módulo puede usar variables globales en el
+módulo sin preocuparse acerca de conflictos con una
+variable global del usuario. Por otro lado, si sabes lo
+que estás haciendo puedes tocar las variables globales
+de un módulo con la misma notación usada para referirte
+a sus funciones, nombremodulo.nombreitem.
+
+* Más sobre módulos
+
+Los módulos pueden importar otros módulos. Es costumbre
+pero no obligatorio el ubicar todas las declaraciones
+import al principio del módulo (o script, para el
+caso). Los nombres de los módulos importados se ubican
+en el espacio de nombres global del módulo que hace la
+importación.
+
+Hay una variante de la declaración *import* que importa
+los nombres de un módulo directamente al espacio de
+nombres del módulo que hace la importación. Por
+ejemplo:
+
+#+begin_src python
+from fibo import fib, fib2
+fib(500)
+#+end_src
+
+* Más sobre módulos
+
+Esto no introduce en el espacio de nombres local el
+nombre del módulo desde el cual se está importando
+(entonces, en el ejemplo, fibo no se define).
+
+Hay incluso una variante para importar todos los
+nombres que un módulo define:
+
+#+begin_src python
+from fibo import *
+fib(500)
+#+end_src
+
+Esto importa todos los nombres excepto aquellos que
+comienzan con un guión bajo (_).
+
+En general la práctica de importar * de un módulo o
+paquete está muy mal vista, ya que frecuentemente
+genera un código poco legible. Sin embargo, está bien
+usarlo para ahorrar tecleo en sesiones interactivas.
+
+- Nota :: Por razones de eficiencia, cada módulo se importa
+     una vez por sesión del intérprete. Por lo tanto, si
+     modificas los módulos, tienes que reiniciar el
+     intérprete – o, si es sólo un módulo que quieres probar
+     interactivamente, usa *importlib.reload()*, por ejemplo
+     *importlib.reload(nombremodulo)* (hay que importar
+     el módulo *importlib* previamente).
+
+* Paths (O el camino de la búsqueda hacia los módulos)
+
+Cuando se importa un módulo llamado *spam*, el intérprete
+busca un archivo llamado spam.py en el directorio
+actual, y luego en la lista de directorios especificada
+por la variable de entorno *PYTHONPATH*. Esta tiene la
+misma sintáxis que la variable de shell *PATH*, o sea,
+una lista de nombres de directorios. Cuando *PYTHONPATH*
+no está configurada, o cuando el archivo no se
+encuentra allí, la búsqueda continua en un camino por
+omisión que depende de la instalación; en Unix, este es
+normalmente .:/usr/lib/python.
+
+#+begin_src python :results output
+import sys
+print(sys.path)
+#+end_src
+
+* La función dir
+
+La función integrada dir() se usa para encontrar qué
+nombres define un módulo. Devuelve una lista ordenada
+de cadenas:
+
+#+begin_src python
+import fibo, sys
+dir(fibo)
+#+end_src
+
+Sin argumentos, dir() lista los nombres de los módulos
+que tienes actualmente definidos:
+
+#+begin_src python
+dir()
+#+end_src
+
+* ¿Qué es un paquete?
+
+Un paquete es una carpeta que contiene archivos
+.py. Pero para que una carpeta pueda ser considerada un
+paquete, esta debe de tener un archivo de inicio
+llamado __init__.py. Este archivo puede estar
+completamente vacío.
+
+#+begin_src txt
+[20:38:28 miguel --> python ]$ tree src
+src
+├── __init__.py
+├── module.py
+├── package1
+│   ├── __init__.py
+│   ├── module1.py
+│   ├── module2.py
+│   └── module3.py
+├── package2
+│   ├── __init__.py
+│   └── only_module.py
+└── package3
+    ├── foo.py
+    └── __init__.py
+#+end_src
+
+* ¿Cómo importar un módulo?
+
+El contenido de un módulo puede ser utilizado por otros
+módulos, para realizar esto, es necesario importar un
+módulo a nuestro archivo actual. La forma de realizar
+esto es usando el comando *import* seguida del nombre del
+paquete (opcional) más el nombre del módulo.
+
+#+begin_src python
+# -*- coding: utf-8 -*-
+import foo          # importando un módulo que no está dentro de un paquete
+import foo.bar      # importando un módulo que está dentro de un paquete
+import foo.bar.baz  # importando un módulo que está dentro de un subpaquete
+#+end_src
+
+* Namespaces y alias
+
+Un namespace es el nombre del archivo del que queremos
+importar cosas, a partir de este podemos acceder a los
+elementos que estén definidos dentro de él.
+
+#+begin_src python
+print foo.CONSTANTE
+#+end_src
+
+Además de esto, siempre podemos abreviar su nombre a
+través de alias, los cuáles los definimos al momento de
+la importación de los módulos.
+
+#+begin_src python
+import foo as f
+
+print f.CONSTANTE
+#+end_src
+
+Además de lo anterior, podemos importar elementos sin
+usar namespaces.
+
+#+begin_src python
+from modulo.foo import CONSTANTE
+#+end_src
+
+* Ejemplo cool
+
+Importar lo siguiente dentro de un intérprete de
+python.
+
+#+begin_src python
+import this
+#+end_src
