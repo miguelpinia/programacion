@@ -11,3 +11,7 @@ Repositorio para el material del curso de Programación.
 * Tareas
 
 - [[file:tareas/tarea1.org][Tarea 1]]: Fecha de entrega - 01 de marzo del 2017.
+
+* Prácticas
+
+- [[file:practicas/practica-1.org][Práctica 1]]: Fecha de entrega - 15 de marzo del 2017.
