@@ -23,8 +23,7 @@ class Polinomio(object):
             data = list(self.val.items()) + list(other.val.items())
             d = {}
             for k, v in data:
-                x = d.get(k, 0)
-                d[k] = x + v
+                d[k] = d.get(k, 0) + v
             return Polinomio(d)
 
     def __str__(self):
