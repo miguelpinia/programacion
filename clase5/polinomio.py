@@ -30,13 +30,9 @@ class Polinomio(object):
         """Imprime de forma bonita un polinomio. Por ejemplo, dado:
         Polinomio({1: 1, 2: 1, 10: 12, 21: 23}), este se imprime como:
         1x^1 + 1x^2 + 12x^10 + 23x^21"""
-        s = ""
-        for key in sorted(self.val):
-            if not s:  # Para la primera iteración
-                s = "{}x^{}".format(self.val[key], key)
-            else:
-                s += " + {}x^{}".format(self.val[key], key)
-        return s
+        return ' + '.join('{}x^{}'.format(self.val[key], key)
+                          for key in sorted(self.val))
+
 
 p = Polinomio({1: 1, 2: 1, 10: 12, 21: 23})
 p1 = Polinomio({3: 9, 10: 11, 21: 33, 34: 12})
