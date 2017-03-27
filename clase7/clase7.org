@@ -1,0 +1,91 @@
+#+title: Herencia
+#+author: Miguel Piña
+#+date: [2017-03-27 lun 05:40]
+
+
+* Herencia
+
+Es uno de los conceptos más importantes de la programación orientada a
+objetos. Simplemente se trata de establecer una relación entre dos tipos de
+clases donde las instancias de una de ellas tengan acceso a los atributos y
+métodos declarados de la otra.
+
+Lo anterior permite definir las siguientes características:
+
+- Clase principal que tendrá las declaraciones o implementaciones a la cuál
+  llamaremos clase *padre*, *superclase* o *principal*. La otra será la clase *hija* o
+  *secundaria*.
+
+- Permite la reutilización de código.
+
+- Python implementa la herencia basándose en el espacio de nombres.
+
+** Herencia Simple
+
+La herencia simple consiste en que una clase hereda únicamente de otra. La
+relación de herencia hace posible utilizar, desde la instancia, los atributos de
+la clase padre. En Python, al definir una clase, indicaremos entre paréntesis de
+la clase que hereda. Vamos a crear primero nuestra clase Padre:
+
+#+begin_src python
+  class Padre():
+      def __init__(self):
+          self.x = 5
+          print("Este es el constructor de la clase padre")
+
+      def metodo(self):
+          print("Ejecutando método de clase padre: " + self.x)
+#+end_src
+
+Crear una clase que herede la que acabamos de crear es muy fácil:
+
+#+begin_src python
+  class Hija(Padre):
+      def metodoHija(self):
+          print("Método clase hija")
+#+end_src
+
+Ahora vamos a proceder a crear una instancia de la case hija y vamos a comprobar
+cómo es posible invocar al método definido en su padre:
+
+#+begin_src python
+  >>> h = Hija()
+
+  >>> h.metodo()
+#+end_src
+
+** Herencia Múltiple
+
+
+Python soporta la herencia múltiple, del mismo modo que C++. Otros lenguajes
+cómo Java y Ruby no la soportan, pero sí que implementan técnicas para conseguir
+la misma funcionalidad. En el caso de Java contamos con las clases abstractas y
+las interfaces, y en Ruby tenemos los mixins.
+
+En la herencia múltiple encontramos las siguientes características
+
+- Similar en comportamiento a la sencilla.
+- Basta con separar con comas los nombres de las clases en la definición de la
+  misma.
+
+Ejemplo
+
+#+begin_src python
+  class Mantenimiento(Persona, Personal):
+      pass
+#+end_src
+
+De está forma, desde la clase Mantenimiento, tendríamos acceso a todos los
+atributos y métodos declarados, tanto en Persona, cómo en Personal.
+
+La herencia múltiple presenta el conocido problema del diamante. Esté problema
+surge cuándo dos clases heredan de otra tercera y, además una cuarta clase tiene
+cómo padre a las dos últimas. La primera clase padre es llamada A y las clases B
+y C heredan de ella, a su vez la clase D tiene cómo padres a B y C. En está
+situación, si una instancia de la clase D llama a un método de la clase A, ¿lo
+heredará desde la clase B o desde la clase C?. Cada lenguaje de programación
+utiliza un algoritmo para tomar está decisión. En el caso particular de Python,
+se toma cómo referencia que todas las clases descienden de la clase padre
+object. Además, se crea una lista de clases que se buscan de derecha a izquierda
+y de bajo arriba, posteriormente se eliminan todas las apariciones de una clase
+repetida menos la última. De está manera queda establecido un orden.
