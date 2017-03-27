@@ -15,3 +15,4 @@ Repositorio para el material del curso de Programación.
 * Prácticas
 
 - [[file:practicas/practica-1.org][Práctica 1]]: Fecha de entrega - 15 de marzo del 2017.
+- [[file:practicas/practica-2.org][Práctica 2]]: Fecha de entrega - 5 de abril del 2017.
