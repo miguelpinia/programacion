@@ -36,7 +36,7 @@ class Pokemon(object):
         return self.energia > 0
 
 #####################
-# Fuego             #
+# Fuego (Pokemon)   #
 # ================= #
 #                   #
 # ================= #
@@ -53,6 +53,30 @@ class Fuego(Pokemon):
 
     def lanzallamas(self):
         return randint(0, 10)
+
+    def bola_de_fuego(self):
+        return randint(0, 10)
+
+
+class Electrico(Pokemon):
+
+    def __init__(self, nombre):
+        super(Electrico, self).__init__(nombre)
+
+    def rayo_electrico(self):
+        return randint(0, 10)
+
+    def tacleada(self):
+        return randint(0, 10)
+
+
+class Chispa(Fuego, Electrico):
+
+    def __init__(self, nombre):
+        super(Chispa, self).__init__(nombre)
+
+    def chispazo(self):
+        return randint(0, 15)
 
 ########################################################
 # Zona de pruebas de código. Esta sección desaparecerá #
@@ -73,3 +97,5 @@ print(charizard)
 
 print(esta_vivo(bulbasaur))
 print(esta_vivo(charizard))
+
+raichu = Chispa('raichu')
