@@ -21,7 +21,7 @@ class Pokemon(object):
         return self.energia > 0
 
     def __dir__(self):
-        return ['resta']
+        return []
 
 
 class Fuego(Pokemon):
@@ -71,3 +71,19 @@ class Chispa(Fuego, Electrico):
         l = super(Chispa, self).__dir__()
         l.extend(['chispazo'])
         return l
+
+
+class Jugador(object):
+
+    def __init__(self, pokemon1, pokemon2):
+        self.pokemon1 = pokemon1
+        self.pokemon2 = pokemon2
+
+
+class JugadorNP(Jugador):
+
+    def __init__(self, pokemon1, pokemon2):
+        super(JugadorNP, self).__init__(pokemon1, pokemon2)
+
+    def ataque(self):
+        pass
