@@ -81,4 +81,4 @@ Crear una clase, llamada Transcriptor, que hará el proceso de transcripción. S
 
 *** Fecha de entrega
 
-19 de abril del 2017 antes de 23:59
+20 de abril del 2017 antes de 23:59
