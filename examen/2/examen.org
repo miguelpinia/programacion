@@ -77,7 +77,7 @@ Crear una clase, llamada Transcriptor, que hará el proceso de transcripción. S
 
 - Deberan entregar un archivo examen2.py con el codigo fuente de su
   solucion. Asegurencen de incluir nombre de los participantes y comentarios de
-  codigo.
+  código. Se envía al correo de fernanda@ciencias.unam.mx
 
 *** Fecha de entrega
 
