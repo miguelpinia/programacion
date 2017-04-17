@@ -68,7 +68,8 @@ Crear una clase, llamada Transcriptor, que hará el proceso de transcripción. S
 
 *** Información
 
-1. Su programa debe ser capaz de trabajar con cualquier tabla correctamente codificada.
+1. Su programa debe ser capaz de trabajar con cualquier tabla correctamente
+   codificada. La tabla asociada se encuentra en el siguiente [[file:codonTable.txt][archivo.]]
 2. La parte de la cadena de ADN antes del START es irrelevante, al igual que la parte de la cadena de ADN después de la de STOP
 3. Su programa deberá poder recibir como parametro de ejecucion la cadena a comprobar. Por ejemplo: python examen2.py AAAAAAAA
 
