@@ -1,16 +1,5 @@
 #!/usr/bin/python3
 
-# def factorial(n):
-#     if n == 1:
-#         return 1
-#     else:
-#         return n * factorial(n - 1)
-
-
-# def fact(n):
-#     f = lambda n, acc: f(n - 1, n * acc) if n > 1 else acc
-#     return f(n, 1)
-
 
 class Nodo(object):
 
@@ -68,28 +57,35 @@ class ArbolBinario(object):
         return self.__busqueda(x, self.raiz)
 
     def remove(self, x):
-        nodo = self.busqueda(x)
-        izquierdo = nodo.izquierdo
-        derecho = nodo.derecho
+        return self.__remove(x, self.raiz)
+
+    def minimo(self, nodo):
+        if nodo.izquierdo is None:
+            return nodo
+        else:
+            return self.minimo(nodo.izquierdo)
 
     def __remove(self, x, raiz):
-        if raiz is not None:
-            if raiz.valor == x:
-                pass
-            elif x < raiz.valor:
-                if raiz.izquierdo.valor == x:
-                    aEliminar = raiz.izquierdo
-                    aEliminarIzquierdo = aEliminar.izquierdo
-                    aEliminarDerecho = aEliminar.derecho
-                    raiz.izquierdo = aEliminarDerecho
-                    minimo = aEliminarDerecho.izquierdo
-                    while minimo.izquierdo is not None:
-                        minimo = minimo.izquierdo
-                    minimo.izquierdo = aEliminarIzquierdo
-                else:
-                    return self.__remove(x, raiz.izquierdo)
-            elif raiz.valor > x:
-                pass
+        if raiz is None:
+            return raiz
+        if x < raiz.valor:
+            raiz.izquierdo = self.__remove(x, raiz.izquierdo)
+            return raiz
+        elif x > raiz.valor:
+            raiz.derecho = self.__remove(x, raiz.derecho)
+            return raiz
+        elif raiz.izquierdo is not None and raiz.derecho is not None:
+            raiz.valor = self.minimo(raiz.derecho).valor  # Implementar mínimo
+            raiz.derecho = self.__remove(raiz.valor, raiz.derecho)
+            return raiz
+        else:
+            if raiz.izquierdo is not None:
+                raiz = raiz.izquierdo
+                return raiz
+            else:
+                raiz = raiz.derecho
+                return raiz
+        return raiz
 
 
 def print_arbol(arbol):
@@ -112,3 +108,39 @@ arbol.insert(11)
 arbol.insert(10)
 arbol.insert(12)
 print_arbol(arbol)
+
+# Ordenamiento
+
+lista = [6, 3, 2, 1, 10, 19, 22, 5, 4, 8, 7, 18, 20]
+a = ArbolBinario()
+
+for i, e in enumerate(lista):
+    print('Iteración ' + str(i) + '\n\n')
+    a.insert(e)
+    print_arbol(a)
+    print('\n\n')
+
+
+def print_ordenamiento(arbol):
+    def imprime(raiz):
+        if raiz is not None:
+            imprime(raiz.izquierdo)
+            print(raiz.valor)
+            imprime(raiz.derecho)
+    imprime(arbol.raiz)
+
+print_ordenamiento(a)
+
+
+def ordenamiento(arbol):
+    lista = []
+
+    def orden(raiz, lista=[]):
+        if raiz is not None:
+            orden(raiz.izquierdo, lista)
+            lista.append(raiz.valor)
+            orden(raiz.derecho, lista)
+    orden(arbol.raiz, lista)
+    return lista
+
+l = ordenamiento(a)
