@@ -1,0 +1,253 @@
+Programación - Examen Final
+Fernanda Sanchez
+Miguel Pina
+
+*Planteamiento del problema
+
+Dado un archivo de datos que contiene cientos de registros con valores que describen tumores de cáncer
+y si cada tumor es maligno o benigno, deben desarrollar un clasificador simple basado en reglas
+que puede usarse para predecir la clase (maligna o benigna) de un conjunto de registros desconocidos.
+
+Aquí está la idea general: Los tumores malignos son diferentes de los tumores benignos.
+Los tumores malignos tienden a tener radios mayores, a ser más suaves, a ser más simétricos, etc.
+Se han realizado mediciones de muchos tumores cuyo estado (maligno o benigno) es
+conocido. El código que van a escribir obtendrá el promedio de todos los tumores, así como la media.
+Digamos, por ejemplo, que el área promedio para los tumores malignos es 100 y es de 50 para los tumores benignos.
+Podemos entonces usar esa información para tratar de predecir si
+un tumor dado es maligno o benigno.
+Ahora, imagina que te muestro un nuevo tumor y que el área es 99.
+Si todo lo demás es igual, tendríamos razones para pensar que este tumor es más probable de ser maligno que si tuviera un  área de 51.
+
+Mientras que los clasificadores reales utilizan reglas más complicadas, vamos a crear un esquema de clasificación muy simple.
+Lo haremos calculando el punto medio entre el promedio maligno y el promedio benigno (75 en nuestro ejemplo hipotético),
+y simplemente decir que para cada nuevo tumor, si su valor para ese
+atributo es mayor o igual al valor del punto medio para ese atributo, es un voto
+para que el tumor que sea maligno. Cada atributo que usamos produce un voto, y al final del conteo de votos para cada atributo,
+si los votos malignos son mayores o iguales a los votos benignos, se predice que el tumor es maligno.
+
+Para 'aprender' cuáles son los valores de los puntos medios, necesitamos tener acceso a los valores de los atributos de muchos
+tumores cuyo estado ya se conoce. Estos valores estan en el archivo del conjunto de entrenamiento. Una vez que tengamos
+el clasificador (que es el valor de los puntos medios), entonces predeciremos el estado de los tumores que estan el archivo de datos de prueba.
+Resulta que también sabemos el estado de los tumores en los datos del archivo de prueba.
+Entonces, un paso final será comparar la predicción que su clasificador hace con el valor real, para ver lo exacto que es su clasificador.
+
+
+*Fondo
+
+Hacer predicciones es difícil y mientras tengamos computadoras debemos usarlas para tratar de hacer mejores predicciones.
+En este proyecto, estaremos escribiendo un pequeño programa para predecir si un tumor de cáncer es o no benigno cuando se le da la media para
+cada uno de los 10 atributos que describen el tumor.
+
+Cada tumor se describe mediante 3 pruebas estadísticas (media, error estándar, min/peor) para 10 valores.
+Para este proyecto, sólo nos preocuparemos por los valores medios.
+
+Cada tumor también tiene datos para el número de identificación y la clase (maligna o benigna).
+Eso hace 32 valores totales en el archivo, por tumor. 
+
+Los 10 atributos del tumor son:
+1. radio
+2. textura
+3. perímetro
+4. área
+5. suavidad
+6. compacidad
+7. concavidad
+8. cóncavo
+9. simetría
+10. fractal
+
+La media, el error estándar y los valores mínimos se describen con los sufijos '_mean',
+'_se' y '_worst', respectivamente, en los archivos de datos.
+Para la etiqueta de clase, M significa Maligno y  B para Benigno.
+Usaremos estos atributos para predecir el valor de la clase (maligno o benigno) para un nuevo
+tumor. Toma en cuenta que el número de identificación no tiene relación con la clase del tumor y se utiliza sólo para
+diferenciar los tumores. Un solo conjunto de atributos para un solo tumor se conoce como un registro.
+No necesitamos saber qué significan los nombres de los atributos. Todo lo que necesitamos saber es que son medidas de los tumores, y
+que los tumores benignos y malignos tienden a tener diferentes valores de los atributos.
+Para estos 10 atributos al comparar las medias, los números más altos indican malignidad.
+
+
+Hay seis tareas asociadas con este proyecto.
+1. Crear un conjunto de entrenamiento.
+Un conjunto de entrenamiento es un conjunto de registros donde sabemos el valor de la clase. Usaremos el
+conjunto de entrenamiento en el siguiente paso para construir un modelo que se pueda utilizar para hacer predicciones.
+
+2. Entrenar un clasificador simple.
+Un clasificador es un modelo del problema de tal manera que cuando se nos da un nuevo registro podemos
+comparar el nuevo registro con el modelo para predecir la clase del nuevo registro. Nosotros
+vamos a usar el conjunto de formación para construir este modelo. Nuestro modelo es muy simple.
+
+Para todos los registros malignos, para cada atributo, se calcula el valor promedio de cada atributo.
+Para todos los registros benignos, para cada atributo, se calcula el valor promedio de cada atributo.
+Para crear el modelo, entonces calculamos el punto medio de estos promedios para cada atributo.
+Luego, para clasificar los nuevos registros, si la mayoría (5 o más) de los atributos del nuevo registro estan
+por encima de sus respectivos puntos medios, entonces el nuevo registro se prevé que sea maligno,
+de lo contrario (4 o menos), benigno.
+
+Hay muchos métodos diferentes en las áreas de Inteligencia Artificial y Aprendizaje de Máquina que han sido
+utilizados por los programadores para hacer predicciones.
+La mayoría de estos métodos dependen en gran medida de métodos basados ​​en estadísticas.
+Pero nosotros vamos a utilizar un método muy simple para hacer predicciones.
+Es decir, nuestro clasificador probablemente no es estadísticamente sólido, pero sirve como un buen
+ejercicio de programación, así como una buena introducción al problema de la predicción de clases.
+
+
+3. Crear un conjunto de prueba.
+Un conjunto de pruebas es un conjunto de registros donde:
+(1) los registros no fueron utilizados para entrenar al clasificador y
+(2) sabemos el valor de la clase.
+Dado que el clasificador no ha visto estos registros todavía pero sabemos la verdadera clase, podemos probar
+la precisión del clasificador en estos nuevos registros. El clasificador asignará la clase del registro que podemos comparar con la clase real.
+
+4. Aplicar el clasificador al conjunto de prueba.
+Para cada registro en el conjunto de pruebas, si la mayoría (5 o más) de los atributos del nuevo registro
+están por encima de sus respectivos puntos medios, entonces el nuevo registro se prevé que sea maligno,
+de lo contrario (4 o menos), es benigno.
+
+5. Reportar la precisión del clasificador.
+Para cada registro del conjunto de pruebas, hay que comparar la clase prevista con la clase real y luego
+imprimir la exactitud del clasificador como número correcto/número total y como porcentaje.
+
+6. Resultados de la producción
+Debe proporcionar otros dos tipos de salida además de la precisión.
+
+
+Primero, reporta las estadísticas que se han recopilado (los promedios malignos y benignos,
+valor del punto medio del clasificador, etc).
+En segundo lugar, debes proporcionar algunos comentarios sobre un paciente.
+El sistema debe solicitar un ID de paciente del conjunto de prueba, y luego
+dar los valores del paciente del conjunto de pruebas, el valor de corte del clasificador para ese valor y el
+valor particular, así como el diagnóstico global del paciente.
+
+
+
+*Descripción y especificación del proyecto
+
+Pongo un ejemplo de la salida de demostración.
+Pueden ver el ejemplo de salida para ver cómo debe ejecutarse el programa.
+La salida de su programa debe ser exactamente como la salida de demostración.
+
+Su programa debe realizar los 6 puntos mencionados anteriormente.
+
+Además, deben implementar al menos dos funciones no triviales 'Helper' que se utilizarán para ayudar a completar las tareas anteriores.
+(Sugerencia: esto debería ser especialmente útil al entrenar al clasificador para hacer algo que se repita varias veces).
+
+Por "Función no trivial", me refiero a que las funciones auxiliares deben completar alguna tarea que requiere paso de parámetros y el uso de valores de retorno.
+(Las funciones no deberían solamente imprimir una línea.)
+
+Lista de verificación de la implementación:
+1. Implementar la función "trainClassifier"
+2. Implemente su primera función auxiliar
+3. Implemente su segunda función auxiliar
+4. Implementar  la función "classifyTestRecords"
+5. Implementar  la función "reportAccuracy"
+6. Implementar la función  "dumpStats"
+7. Implementar la función "checkSomePatients"
+
+
+
+*Notas y sugerencias:
+
+Las tareas tienen que ser completadas en orden. Obviamente, no puedes usar un clasificador antes de haberlo entrenado.
+
+No traten de abordar este proyecto de una sola vez. Completa una función (o parte de una función) y pruebalo.
+
+Si estás trabajando en una función sería útil agregar declaraciones de impresión para que puedan ver lo que el
+programa está haciendo y despues comentar esto  una vez que estén seguros de que el código funciona.
+
+Los archivos de Pruebas y Entrenamiento no pueden ser modificados y deben crear una funcion que los lea para recuperar los datos, i.e.
+no pueden vertir los datos directamente en su programa (quizá se me ocurra modificar algunos datos mientras pruebo sus programas).
+
+No cambien el nombre de los archivos.
+
+
+
+*Preguntas adicionales:
+
+¿Cuál es la precisión del clasificador si:
+• Usas los valores medios más el error estándar y los peores atributos ?
+   • Esto significa que necesitarás calcular los puntos medios para los SE y los peores para el conjunto de entrenamiento e incluirlos en su voto en el conjunto de prueba, así que ahora valores de 15 o mayores que el punto medio, predecirán tumores malignos y menores predeciran benignos. 
+• Usas sólo los valores medios y los peores valores?
+• Usas sólo los valores medios y los valores estándar?
+• Usas solo los peores valores?
+• Usas sólo los valores del error estándar?
+
+Incluyendo el enfoque del proyecto principal, (dónde se usa solamente la media de los valores),
+Qué clasificador es el más exacto?
+
+
+
+Entregables:
+-Deberán entregar un archivo llamado examenFinal.py con el codigo ejecutable de su programa.
+-La codificación de su programa deberá cumplir con las especificaciones del PEP, incluir comentarios y
+seguir las especificaciones de la programación Orientada a Objetos.
+-Deberán entregar un archivo en latex (.tex y .pdf) con el analisis de su programa, justificaciones de implementación y
+las respuestas a las preguntas adicionales mencionadas anteriormente.
+-El examen es individual y cualquier método o función copiada con alguien más será anulado.
+-Deberán entregar su examen el 2 junio 2017 antes de las 23hrs.
+
+
+*Ejemplo de Ejecución y Salida
+Nota: la entrada del usuario es solo el identificador del usuario que se quiere revisar y "quit" para salir.
+
+Clasificador, estadisticas benignas y malignas
+============================================================================== ====================
+Clave Media-de-Clasificador Promedio-Maligno Promedio-Benigno
+Radius 17.075 14.545 12.016
+Textura 21.385 19.279 17.174
+Perímetro 112.687 94.919 77.152
+Área 934.017 693.338 452.659
+Suavidad 0,103 0,098 0,093
+Compacidad 0.144 0.110 0.077
+Concavidad 0,153 0,100 0,046
+Cóncavo 0,084 0,055 0,025
+Simetría 0,194 0,185 0,175
+Fractal 0.063 0.063 0.063
+
+Lectura en datos de prueba ...
+Listo lectura en los datos de prueba.
+
+Clasificación de registros ...
+Hecho clasificación.
+
+El clasificador predijo correctamente la clase (maligno / benigno) de 213 registros de 231 registros.
+El clasificador alcanzó una precisión del 92.21%.
+
+Escriba el ID de un paciente para revisar ('quit' para salir): 897880
+Revisando ID de verificación: 897880
+
+Clave Valor-del-Paciente Limite-Clasificador Clase
+Perímetro 64.410 94.919 Benigno
+Simetría 0,189 0,185 Maligno
+Área 310.800 693.338 Benigno
+Cóncavo 0,018 0,055 Benigno
+Textura 17.530 19.279 Benigno
+Concavidad 0,025 0,100 Benigno
+Radio 10.050 14.545 Benigno
+Compacidad 0,073 0,110 Benigno
+Fractal 0.063 0.063 Malignant
+Suavidad 0.101 0.098 Maligno
+
+
+Diagnóstico del Paciente 897880: Benigno
+
+
+Escriba un ID para revisar a un paciente ('quit' para salir): 89812
+Revisando ID de verificación: 89812
+
+Clave Valor-del-Paciente Limite-Clasificador Clase
+Perímetro 155.100 94.919 Maligno
+Simetría 0,180 0,189 Benigno
+Área 1747.000 693.338 Maligno
+Cóncavo 0,141 0,055 Maligno
+Textura 24.270 19.279 Maligno
+Concavidad 0,231 0,100 Maligno
+Radio 23.510 14.545 Malignant
+Compacidad 0.128 0.110 Maligno
+Fractal 0,055 0,063 Benigno
+Suavidad 0,107 0,098 Maligno
+
+Diagnóstico del Paciente 89812: Maligno
+
+Escriba un ID para revisar a un paciente ('quit' para salir): quit
+Programa terminado.
