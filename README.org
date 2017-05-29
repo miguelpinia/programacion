@@ -8,6 +8,10 @@ Repositorio para el material del curso de Programación.
 - Profesora :: Maria Fernanda Sanchez Puig
 - Ayudante :: Miguel Angel Piña Avelino
 
+* Calificaciones
+
+Las calificaciones se encuentran en el siguiente [[https://docs.google.com/spreadsheets/d/1Yjifj-rxvi169g8jyZ3Nob5ggqRzGi7mMhUM2RCyoGk/edit?usp=sharing][enlace]].
+
 * Tareas
 
 - [[file:tareas/tarea1.org][Tarea 1]]: Fecha de entrega - 01 de marzo del 2017.
