@@ -173,8 +173,7 @@ su estructura interna.
 
 Los archivos cuyo nombre inicia con punto *.* son archivos de configuración.
 
-[[file:Linux_Tree.png ]]
-
+[[file:filesystem2.gif]]
 
 * Rutas absolutas y relativas
 
