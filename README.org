@@ -7,9 +7,9 @@ Repositorio para el material del curso de Programación.
 - Asignatura :: Programación
 *Instructores*
 
- Maria Fernanda Sanchez Puig [[mailto:fernanda@ciencias.unam.mx][fernanda@ciencias.unam.mx]]
+ Maria Fernanda Sanchez Puig ([[mailto:fernanda@ciencias.unam.mx][fernanda@ciencias.unam.mx]])
 
- Miguel Angel Piña Avelino [[mailto:miguel_pinia@ciencias.unam.mx][miguel_pinia@ciencias.unam.mx]]
+ Miguel Angel Piña Avelino ([[mailto:miguel_pinia@ciencias.unam.mx][miguel_pinia@ciencias.unam.mx]])
 
 
 Este repositorio puede ser descargado usando git con el siguiente comando:
