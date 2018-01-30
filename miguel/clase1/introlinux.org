@@ -35,6 +35,23 @@
 - Se impide que el código se mezcle con código propietario.
 
 
+** BSD
+1. Aviso de copyright original.
+2. Dos restricciones simples:
+   - No hay que afirmar que escribieron el software si no lo escriben.
+   - No demandar al creador si el software no funciona como se esperaba o como
+     se desee.
+3. Exención de responsabilidad.
+
+* Ubuntu
+
+- Distribución enfocada a computadoras de escritorio, aunque existe la versión
+  para servidores.
+  + Basada en Debian, Ubuntu concentra su objetivo en la usabilidad,
+    actualizaciones regulares y facilidad en la instalación.
+  + Patrocinado por Canonical Ltd., una empresa privada fundada y financiada por
+    el empresario sudafricano Mark Shuttleworth.
+
 * Historia de Linux
 - Multics: proyecto de Bell Labs (AT&T), General Electrics y el MIT (1969) para
   el sistema GE 645, demasiado ambicioso para la época (pobre rendimiento).
@@ -50,22 +67,9 @@
   + System III: primera versión comercial de UNIX (1982).
 - Dos líneas principales: System V y BSD.
 
-** BSD
-1. Aviso de copyright original.
-2. Dos restricciones simples:
-   - No hay que afirmar que escribieron el software si no lo escriben.
-   - No demandar al creador si el software no funciona como se esperaba o como
-     se desee.
-3. Exención de responsabilidad.
 
 
-** Ubuntu
-- Distribución enfocada a computadoras de escritorio, aunque existe la versión
-  para servidores.
-  + Basada en Debian, Ubuntu concentra su objetivo en la usabilidad,
-    actualizaciones regulares y facilidad en la instalación.
-  + Patrocinado por Canonical Ltd., una empresa privada fundada y financiada por
-    el empresario sudafricano Mark Shuttleworth.
+
 
 
 * Línea de Comandos
