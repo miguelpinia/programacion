@@ -29,7 +29,6 @@
 (defvar my-packages
   '(material-theme
     flycheck
-    python-mode
     py-autopep8
     magit
     yasnippet
