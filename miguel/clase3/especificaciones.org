@@ -1,0 +1,482 @@
+#+title: Clase 1
+#+author: Miguel Piña
+#+date: [2017-02-12 dom 15:18]
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+* Estructura de un programa en python
+
+La mayoría de los scripts en python van a tener una estructura similar al
+momento de organizar el código.
+
+La idea de estructurar el código escrito es para facilitar la lectura de código
+en python, así como ayudar en el proceso de debug de un programa y poder
+entender el funcionamiento del mismo.
+
+La forma más común de estructurar un programa está compuesta de los siguientes
+elementos:
+
+- Línea de inicialización (Entornos Unix)
+- Documentación del script
+- Módulos a importar
+- Declaración de variables
+- Declaración de clases
+- Declaración de funciones
+- Cuerpo Main
+
+#+begin_src python :results output
+  #!/usr/bin/python3         # Línea de inicialización
+
+  """Módulo de ejemplo"""        # Documentación del script
+
+  import sys                 # Módulos importados
+  import os
+
+  DEBUG = True               # Declaración de variables
+
+  class Ejemplo(object):     # Declaración de clases
+      """Clase de ejemplo"""
+      pass
+
+  def foo():                 # Declaración de funciones
+      print(sys.byteorder)   # Little endian o big endian
+      print(os.ctermid())    # Terminal?
+      return "Foo"
+
+  if __name__ == '__main__': # Cuerpo principal
+      print(foo())
+#+end_src
+
+* Linea de inicialización
+
+Conocida comúnmente como shebang, es utilizada en entornos UNIX. Si el script
+tiene permisos de ejecución, bastará con ejecutarlo con invocarlo por su
+nombre.
+
+#+begin_src python
+  #!/usr/bin/python3
+
+  #!/usr/bin/env python3
+#+end_src
+
+* Documentación del script
+
+En esta sección, se buscará explicar la utilidad del script ó módulo que se está
+desarrollando. En el, se realizará un resumen acerca de las variables globales,
+funciones o clases que se encuentran dentro del archivo. Si se encuentra
+importado el módulo, para acceder a esta documentación bastará con:
+
+#+begin_src python
+  import modulo  # importamos el módulo
+
+
+  help(modulo)   # Revisamos su documentacion con la ayuda de python
+
+  modulo.__doc__ # Sacamos su información.
+#+end_src
+
+* Módulos a importar
+
+Cuando se importa un módulo, este se carga una vez en memoria para que pueda ser
+accedido por cada uno de los elementos del script que hagan uso de dicho
+módulo. Si se realizan cambios en los módulos importados mientras se está usando
+el script, es necesario volver a cargar los módulos declarados.
+
+#+begin_src python
+  # Si estamos trabajando con Python 3.0 a 3.3
+  import imp
+  imp.reload(modulo)
+
+  # Python 3.4 en adelante
+  import importlib
+  importlib.reload(modulo)
+#+end_src
+
+* Declaración de variables
+
+En esta sección se declaran las variables globales del script/módulo.
+
+Una buena práctica es que se evite el uso de variables globales en detrimento de
+variables locales, ya que esto mejorara el uso de memoria y rendimiento de la
+aplicación, entre otras razones (problemas de concurrencia, deadlocks, etc.).
+
+Una buena forma de determinar si una variable debe ser global dentro del
+script/módulo, es identificar si esta va a ser usada como una constante
+durante el periodo de ejecución.
+
+* Declaración de clases
+
+Todas las clases que implementemos se deben declarar en esta sección. Una clase
+va a estar definida cuando el módulo que la contiene se importa y la sentencia
+/class/ se ejecuta. Para hacer uso de ellas hay que construir un objeto
+(instancia) de dicha clase.
+
+#+name: modulo
+#+begin_src python :exports code :session
+  class MiClase(object):
+      """Clase de ejemplo"""
+
+      def __init__(self, param1, param2):
+          self.param1 = param1
+          self.param2 = param2
+
+      def doSomething(self):
+          print("Estoy haciendo algo con {}".format(self.param1))
+
+      def __str__(self):
+          return "Param 1: {}, param 2: {}".format(self.param1, self.param2)
+
+#+end_src
+
+#+begin_src python :results output
+import modulo
+
+a = modulo.MiClase("parametro 1", 2)
+a.doSomething()
+print(a)
+#+end_src
+
+* Declaración de funciones
+
+Funciona de forma similar a las clases.
+
+* Main
+
+Todo el código en este nivel se ejecutará donde este módulo se importe o se
+arranque como un script. La gran mayoría de los scripts contendrán una única
+validación contra la variable __name__, que de de validarse, redirigirá al
+método o función determinado.
+
+* Estilo de código
+
+Si ustedes le pregunta a desarrolladores de python qué es lo que más les gusta
+de Python, ellos dirán que es la alta legibilidad del código. De hecho, la alta
+legibilidad del código es el corazón del lenguaje, siguiendo el hecho de que el
+tiempo invertido para leer el código es mayor que el invertido para escribirlo.
+
+Una de las principales razones para la alta legibilidad de python, es el
+relativamente completo conjunto de guías de estilo de código de Python.
+
+** Código explicito
+
+*Mala idea*
+
+#+begin_src python
+  def make_complex(*args):
+      x, y = args
+      return dict(**locals())
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+def make_complex(x, y):
+    return {'x': x, 'y': y}
+#+end_src
+
+** Una instrucción por línea
+
+*Mala idea*
+
+#+begin_src python
+  print 'one'; print 'two'
+
+  if x == 1: print 'one'
+
+  if <complex comparison> and <other complex comparison>:
+      # Do something
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+  print 'one'
+  print 'two'
+
+  if x == 1:
+      print 'one'
+
+  cond1 = <complex comparison>
+  cond2 = <other complex comparison>
+  if cond1 and cond2:
+      # Do something
+#+end_src
+
+** Argumentos de funciones
+
+*** Argumentos posicionales
+
+Supongamos que tenemos una función *send(message, recipient)*, que tiene
+parámetros sin valores por defecto, entonces:
+
+*Mala idea*
+
+#+begin_src python
+send(recipient='World', message='Hello')
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+send('Hello', 'World')
+#+end_src
+
+*** Argumentos con valores por defecto
+
+Cambiemos la función anterior a *send(message, to, cc=None, bcc=None)*
+
+*Mala idea*
+
+#+begin_src python
+send('Hello', 'World', 'Cthulhu', 'God')
+send('Hello again', 'World', bcc='God', cc='Cthulhu')
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+send('Hello', 'World', cc='Cthulhu', bcc='God').
+#+end_src
+
+*** Lista de argumentos arbitrarios
+
+Ajustemos de nuevo la función a _send(message, *recipients)_
+
+*Mala idea*
+
+#+begin_src python
+send('Hello', 'God', 'Mom', 'Cthulhu')
+#+end_src
+
+Buena idea
+
+#+begin_src python
+send('Hello', ['God', 'Mom', 'Cthulhu'])
+#+end_src
+
+** Desempaquetamiento
+
+Si tu conoces la longitud de una lista o tupla, puedes asignar nombres a los
+elementos con desempaquetamiento. Por ejemplo, dado =enumerate()=, esta función va
+a proveer dos elementos para cada iteración en la lista.
+
+#+begin_src python
+  for index, element in enumerate(some_list):
+      # do something with index and element
+
+  a, b = (1, 2)
+#+end_src
+
+También puede ser utilizado para intercambiar valores entre dos variables:
+
+#+begin_src python
+a, b = b, a
+#+end_src
+
+Desempaquetamiento anidado también está permitido:
+
+#+begin_src python
+a, (b, c) = 1, (2, 3)
+a, *rest = [1, 2, 3]
+a, *middle, c = [1, 2, 3, 4]
+#+end_src
+
+** Creando variables ignoradas
+
+Si es necesario asignar algo, (por ejemplo con desempaquetamiento), pero no se
+va a utilizar esa variable, se puede usar __ ó _:
+
+#+begin_src python :results output
+filename = 'foobar.txt'
+basename, __, ext = filename.rpartition('.')
+print(basename, ext)
+#+end_src
+
+** Crear una lista de tamaño N de la misma cosa
+
+#+begin_src python :results output
+four_nones = [None] * 4
+print(four_nones)
+#+end_src
+
+#+RESULTS:
+: [None, None, None, None]
+
+** Crear una lista de listas de tamaño N
+
+#+begin_src python :results output
+four_lists = [[] for _ in range(4)]
+print(four_lists)
+#+end_src
+
+
+** Crear una cadena de una lista
+
+#+begin_src python :results output
+  letters = ['s', 'p', 'a', 'm', 'e', 'r']
+  word = ''.join(letters)
+  print(word)
+#+end_src
+
+** Buscando un elemento en una colección
+
+#+begin_src python
+s = set(['s', 'p', 'a', 'm'])
+l = ['s', 'p', 'a', 'm']
+
+def lookup(s):
+    return 's' in s
+
+def lookup_set(s):
+    return 's' in s
+
+def lookup_list(l):
+    return 's' in l
+#+end_src
+
+* Convenciones
+
+** Verificar si una variable es igual a una constante
+
+*Mala idea*
+
+#+begin_src python
+if attr == True:
+    print 'True!'
+
+if attr == None:
+    print 'attr is None!'
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+# Sólo checamos el valor
+if attr:
+    print 'attr es verdadero!'
+
+# O checar lo opuesto
+if not attr:
+    print 'attr es falso!'
+
+# o, debido a que None es considerado falso, explicitamente checarlo:
+if attr is None:
+    print 'attr es None!'
+#+end_src
+
+** Acceso a un elemento de diccionario
+
+No uses dict.has_key(). En su lugar usa la sintaxis x in d, o pasa un valor por
+defecto a dict.get():
+
+*Mala idea*
+
+#+begin_src python
+d = {'hello': 'world'}
+if d.has_key('hello'):
+    print d['hello']    # imprime 'world'
+else:
+    print 'default_value'
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+d = {'hello': 'world'}
+
+print d.get('hello', 'default_value') # imprime 'world'
+print d.get('thingy', 'default_value') # imprime 'default_value'
+
+# Or:
+if 'hello' in d:
+    print d['hello']
+#+end_src
+
+** Vías cortas para manipular listas
+
+La comprehension de listas provee una poderosa y concisa vía para manipular
+listas, también las funciones map y filter pueden ayudarte para operar con
+listas usando una diferente pero más concisa sintaxis.
+
+*Mala idea*
+
+#+begin_src python
+# Filtrar elementos mayores a 4
+a = [3, 4, 5]
+b = []
+for i in a:
+    if i > 4:
+        b.append(i)
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+a = [3, 4, 5]
+b = [i for i in a if i > 4]
+# O:
+b = filter(lambda x: x > 4, a)
+#+end_src
+
+*Mala idea*
+
+#+begin_src python
+# Suma tres a todos los elementos de la lista.
+a = [3, 4, 5]
+for i in range(len(a)):
+    a[i] += 3
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+a = [3, 4, 5]
+a = [i + 3 for i in a]
+# O:
+a = map(lambda i: i + 3, a)
+#+end_src
+
+
+** Leyendo desde un archivo
+
+*Mala idea*
+
+#+begin_src python
+  f = open('file.txt')
+  a = f.read()
+  print(a)
+  f.close()
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+  with open('file.txt') as f:
+      for line in f:
+          print(line)
+#+end_src
+
+** Continuaciones de linea
+
+*Mala idea*
+
+#+begin_src python
+my_very_big_string = """For a long time I used to go to bed early. Sometimes, \
+    when I had put out my candle, my eyes would close so quickly that I had not even \
+    time to say “I’m going to sleep.”"""
+
+from some.deep.module.inside.a.module import a_nice_function, another_nice_function, \
+    yet_another_nice_function
+#+end_src
+
+*Buena idea*
+
+#+begin_src python
+my_very_big_string = (
+    "For a long time I used to go to bed early. Sometimes, "
+    "when I had put out my candle, my eyes would close so quickly "
+    "that I had not even time to say “I’m going to sleep.”"
+)
+
+from some.deep.module.inside.a.module import (
+    a_nice_function, another_nice_function, yet_another_nice_function)
+#+end_src
