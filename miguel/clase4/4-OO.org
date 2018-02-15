@@ -1,0 +1,71 @@
+#-*- mode: org -*-
+
+* Proceso del desarrollo de Software
+1. Especificacion: Enunciado del problema, entradas y salidas.
+2. Análisis y Diseno: solución correcta, eficiente, modular, reutlizacion de funciones, etc.
+3. Implementación: codificación y elección de lenguaje de programación, documentación.
+4. Validación: pruebas
+5. Mantenimiento: recuperación de bugs. Actividad de mayor costo.
+6. Extensión: agregar funcionalidades
+
+
+* Orientacion a Objetos
+Se debe dividir el problema en partes faciles de entender.
+Hay que divdir el problema en actores (objetos) y responsabilidades.
+
+Agrupamos los objetos en clases por su patron de comportamiento:
+- Tienen caracteristicas comunes.
+- Funcionalidad
+
+Instancias de una clase son los representantes de las clases.
+
+Hay que identificar los objetos involucrados.
+De un objeto nos interesa:
+- Estado o atributos
+- Conducta: que sabe hacer
+
+** Conceptos
+*Encapsulamiento* cada objeto es dueno de sus datos y funciones y permite o no que otras clases usen sus recursos. Importa lo que hace, no cómo lo hace.
+
+*Ocultamiento de Informacion*: aisla unas partes del sistema de otras. Permite modificar y extender sin introducir efectos colaterales.
+
+*Mensajes*: Un objeto pide un servicio a otro a traves de mensajes. Consiste del nombre de la operación y los argumentos.
+
+*Conducta*: conjunto de mensajes a los que un obejto puede responder.
+
+*Metodos*: Una operacion se realiza mediante la ejecucion de un metodo o algoritmo.
+ 
+*Clases*: agrupacion de objetos con el mismo comportamiento. Taxonomia y especificacion generica de objetos a nivel abstracto.
+
+*Instancias*: ejemplares de un objeto.
+Fulanito y Perenganito son instancias de los Seres Humanos.
+
+*Herencia*: Familia de objetos con un nucleo en comun pero que difieren en algunos atributos o funciones.
+Se identifica la clase base a partir de la cual la familia es una extensión.
+
+Figuras Geometricas:
+- Punto
+- Linea
+-- Recta
+-- Curva
+- Superficie
+-- Cuadrado
+-- Circulo
+- Volumen
+-- Esfera
+-- Cubo
+
+*Polimorfismo*: una funcion heredada se lleva a cabo de manera personal en la clase. 
+El mismo metodo tiene un significado diferente dependiendo del objeto que lo invoca.
+
+Tipos de Funciones:
+- Constructoras: creacion e inicializacion de objetos.
+- Implementacion: servicios del objeto.
+- Acceso: información del estado del objeto.
+- Auxiliares: internas.
+- Actualización: modifican el estado del objeto.
+
+Tipos de acceso:
+- Publico: tiene acceso a sus funciones objetos de cualquier otra clase.
+- Privado: tienen acceos a sus funciones objetos de la misma clase. __contenido__
+- Protegido: las funciones son accesibles objetos de la misma clase y subclases. _contenido
