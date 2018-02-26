@@ -15,3 +15,7 @@ Este repositorio puede ser descargado usando git con el siguiente comando:
 #+begin_src sh
 git clone https://github.com/miguelpinia/programacion.git
 #+end_src
+
+* Tareas
+
+- [[file:Tareas/tarea1.org][Tarea 1]]
