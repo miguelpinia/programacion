@@ -3,6 +3,7 @@
 #+date: [2018-02-26 lun 12:22]
 #+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
 
+* Preguntas
 
 1) Qué es lo que se conoce como la arquitectura de Von Newmann y cómo esta
    compuesta?
@@ -17,7 +18,10 @@
    describe (con ejemplos) al menos 5 convenciones o estilos de codificación
    (HINT: PEP8).
 
-5) Biblioteca de Libros.
+* Diseño
+
+*Biblioteca de Libros.*
+
 
 El bibliotecario local nos ha pedido que escribamos un nuevo programa de
 catálogo de tarjetas porque su antiguo programa es feo y anticuado.  Eso no nos
@@ -62,17 +66,18 @@ algo no esta bien.  Siempre opten por relaciones simples y disenos
 elegantes. (Aplica para todo tipo de relaciones, incluyendo amorosas y
 familiares).
 
-Hint: Si su diseno tiene más de 10 clases, piensenlo otra vez.
+*Hint:* Si su diseno tiene más de 10 clases, piensenlo otra vez.
 
-
+* Entregables
 
 Entregables: Deberán entregar un archivo llamado <NombreApellido>-tarea1.pdf y
 enviarlo al correo fernanda@ciencias.unam.mx y miguel_pinia con *Asunto*:
 "Programacion Tarea1"
 
-Fecha de entrega: 05 de Marzo 2018
+Fecha de entrega: *05 de Marzo 2018* antes de la medianoche
 
-Notas:
+* Notas
+
 - La tarea es personal y sobra decir que tareas copiadas serán anuladas.
 - El 06 de Marzo 2018 eligiré al azar un par de personas para que defiendan su
   tarea frente al grupo y la discutamos juntos. Preparense y no falten.
