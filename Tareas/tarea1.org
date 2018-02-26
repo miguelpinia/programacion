@@ -71,8 +71,8 @@ familiares).
 * Entregables
 
 Entregables: Deberán entregar un archivo llamado <NombreApellido>-tarea1.pdf y
-enviarlo al correo fernanda@ciencias.unam.mx y miguel_pinia con *Asunto*:
-"Programacion Tarea1"
+enviarlo al correo fernanda@ciencias.unam.mx y miguel_pinia@ciencias.unam.mx con
+*Asunto*: "[Programación] Tarea1"
 
 Fecha de entrega: *05 de Marzo 2018* antes de la medianoche
 
