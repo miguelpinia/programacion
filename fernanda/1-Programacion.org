@@ -1,0 +1,68 @@
+#-*- mode: org -*-
+
+* Que es programacion?
+Dadas 2 imagenes de celulas sanguineas.
+- Cual muestra leucemia?
+- Cuanto tardaría en analizar la imagen?
+- Cuantas personas enfermas hay?
+
+Programas de computo pueden hacerlo.
+- Genetistas pueden analizar secuencias de genes
+- Economistas analizan cambio en la bolsa de mercados
+- Geólogos predicen efectos de sismos.
+
+Científicos hacen programas para su trabajo.
+Tambien gente comun: chats, editores de texto, buscar lugares de pizza.
+
+Queremos hacer programas que hagan algo que no se ha hecho antes. Cambiar al mundo.
+
+*Saber programar es importante aunque no seas programador.*
+
+* Como hacer que la computadora haga lo que yo quiero?
+*Programa:* conjunto de instrucciones.
+Escribir un programa: instrucciones para llegar a tu casa.
+Ejecutar un programa: Tu amigo sigue las instrucciones.
+
+Un programa debe ser escrito en operaciones básicas y comprensibles.
+
+*Cual es la diferencia entre una computadora y una calculadora?*
+A la computadora puedes "ensenarle" nuevas operaciones y crear nuevas operaciones a partir de otras anteriores.
+
+- Sacar promedio = sumar numeros + dividir entre el tamano 
+- Crear vida: atomos -> proteinas -> celulas -> organos -> creaturas.
+
+*Core de la programacion:* definir nuevas operaciones y combinarlas entre si.
+
+* Pensamiento Computacional
+1. Conceptualizar, no programar: multiples niveles de abstracción.
+2. Una forma en la que los humanos piensan, no las computadoras: las computadoras son tontas, los humanos imaginativos
+3. Para todo el mundo en todas partes.
+
+* Que es un lenguaje de programacion?
+Mientras entiendas ruso, espanol o ingles las personas pueden entender las instrucciones para llegar a tu casa.
+Hay muchos lenguajes de programación sus instrucciones son sumar, leer un archivo, usar botones, etc.
+
+Cada lenguaje tiene su forma de escribir una instrucción.
+
+Python: 3+4
+Scheme: (+ 3 4)
+
+Por eso cuando se aprende un lenguaje, es facil aprender otro.
+
+* Que es un bug?
+A todo se nos ha roto un programa.
+- Escribiendo un texto, la computadora se traba y olvidaste salvar.
+- Windows: Blue Screen of Death.
+- El programador pide a la computadora hacer algo que no puede: abrir un archivo que no existe, ciclos infinitos, memoria llena, etc.
+
+Peor aun, algunos programas no se rompen, dan información incorrecta!!
+Todo programa tiene bugs. Hay que minimizarlos y reducir su severidad.
+
+Correguir un bug:
+1. Encontrar la instrucción incorrecta.
+2. Pensar en la correcta.
+3. Poner la instruccion correcta sin agregar nuevos bugs!!
+
+Software updates:
+1. Nuevas funcinalidades
+2. Arreglo de bugs

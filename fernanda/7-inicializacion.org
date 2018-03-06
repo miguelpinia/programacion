@@ -1,0 +1,86 @@
+#-*- mode: org -*-
+
+* Multiples Argumentos
+Vamos a agregar un metodo que mueva el punto a una posicion arbitraria y calcular la distancia.
+
+#+BEGIN_SRC python
+import math
+
+class Point:
+ def move(self, x, y):
+           self.x = x
+           self.y = y
+       
+       def reset(self):
+           self.move(0, 0)
+       
+       def calculate_distance(self, other_point):
+           return math.sqrt(
+                 (self.x - other_point.x)**2 +
+                (self.y - other_point.y)**2)
+
+point1 = Point()
+point2 = Point()
+point1.reset()
+point2.move(5,0)
+print(point2.calculate_distance(point1))
+point1.move(3,4)
+print(point1.calculate_distance(point2))
+print(point1.calculate_distance(point1))
+
+#+END_SRC python
+
+Para invocar un metodo solo se incluyen los argumentos dentro del parentesis sin el parametro self.
+
+* Inicializar un objeto
+Si no establecemos explicitamente la posicion x y y del punto usando el metodo move o directamente, 
+entonces tenemos un punto roto.
+
+#+BEGIN_SRC python
+point = Point()
+point.x = 5
+print(point.x)
+5
+
+print(point.y)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Point' object has no attribute 'y'
+#+END_SRC python
+
+Manda un mensaje de error que debemos entender.
+Podemos arreglarlo, haciendo que cada objeto debe ser reset() por default.
+
+A diferencia de otros lenguajes, Python construye e inicializa un objeto con funciones separadas.
+Aunque la funcion constructor se define rara vez.
+
+El metodo de inicializacion tiene un nombre especial __init__. Los guiones bajos significan que es un metodo especial y Python lo trata de manera diferente.
+
+Agregando un metodo de inicializacion al codigo:
+#+BEGIN_SRC python
+class Point:
+       def __init__(self, x, y):
+           self.move(x, y)
+
+       def move(self, x, y):
+           self.x = x
+           self.y = y
+       
+       def reset(self):
+           self.move(0, 0)
+
+point = Point(3, 5)
+print(point.x, point.y)
+#+END_SRC python
+
+Podemos poner valores por default a los parametros de forma que si no se pasan argumentos, entonces se utilizan los valores por defecto.
+
+#+BEGIN_SRC python
+class Point:
+         def __init__(self, x=0, y=0):
+             self.move(x, y)
+#+END_SRC python
+
+Utlizar la funcion init es suficiente para inicializar un objeto, pero tambien tenemos una funcion para construir nuevos objetos.
+La funcion constructora se llama __new__ y solo acepta un argumento que es la clase que va a construir.
+Esta funcion es llamada antes de que el objeto sea construido asi que no lleva parametro self.

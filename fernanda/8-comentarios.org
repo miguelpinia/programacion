@@ -1,0 +1,81 @@
+#-*- mode: org -*-
+
+* Modulos y Paquetes
+Un modulos es un archivo de python que contiene una clase y facilita la organizacion entre ellas.
+
+*import* permite importar modulos, clases especificas o funciones.
+
+Supongamos que tenemos un modulo llamado database.py que contiene la clase Database y
+otro modulo llamado products.py 
+
+Hay varias sintaxis para importar modulos:
+- import database: permite acceso a cualquier clase o funcion del modulo database.
+#+BEGIN_SRC python
+import database
+   db = database.Database()
+#+END_SRC python
+
+- from database import Database: importa solo una clase que necesitamos
+#+BEGIN_SRC python
+from database import Database
+   db = Database()
+#+END_SRC python
+
+- from database import Database as DB: importa una sola clase y se renombra para evitar confusion con homonimos.
+#+BEGIN_SRC python
+from database import Database as DB
+   db = DB()
+#+END_SRC python
+
+- from database import Database, Query: permite importar varias clases, pero no todas, de un mismo modulo.
+
+Cada nombre usado en un modulo debe venir de un lugar bien especificado, ya sea que esta definido en ese modulo o importado de otro.
+No debe haber variables magicas.
+
+*paquete* es una coleccion de modulos dentro de un folder. El nombre del paquete es el nombre del folder.
+Para decirle a Python que un folder es un paquete se agrega al folder, un archivo vacio llamado __init__.py
+
+#+BEGIN_SRC python
+parent_directory/
+       main.py
+       ecommerce/
+           __init__.py
+           database.py
+           products.py
+           payments/
+               __init__.py
+               square.py
+               stripe.py
+#+END_SRC python
+
+
+* Documentacion
+Es importante escribir documentacion que explique lo que hace cada metodo.
+Cada clase, metodo o funcion pude tener una primera linea de encabezado con la definicion.
+
+Las cadenas de documentacion de Python pueden ser:
+- Apostrofes '
+- Quotes "
+- Triples apostrofes o quotes para multiples lineas '''
+
+Un comentario debe explicar de manera concisa y clara el proposito de la clase o funcion que esta describiendo.
+Debe explicar los parametros que recibe y ejemplos de uso.
+
+#+BEGIN_SRC python
+class Point:
+       'Represents a point in two-dimensional geometric coordinates'
+       def __init__(self, x=0, y=0):
+           '''Initialize the position of a new point. The x and y
+   coordinates can be specified. If they are not, the
+              point defaults to the origin.'''
+           self.move(x, y)
+#+END_SRC python
+
+La documentacion del codigo permite generar un archivo de ayuda de la clase.
+
+#+BEGIN_SRC python
+from foo import Point
+>>> help(Point)
+#+END_SRC python
+
+

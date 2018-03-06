@@ -1,0 +1,71 @@
+#-*- mode: org -*-
+
+Hay dos formas de importar modulos:
+- Absoluta
+- Relativa
+
+* Absoluta
+Se especifica el path completo del modulo o funcion que se desea importar.
+
+#+BEGIN_SRC python
+import ecommerce.products
+   product = ecommerce.products.Product()
+
+from ecommerce.products import Product
+   product = Product()
+
+from ecommerce import products
+   product = products.Product()
+#+END_SRC python
+
+Utiliza el operador punto para separar paquetes y modulos.
+
+Si queremos usar muchas clases y funciones de un modulo, entonces lo mejor será importar todo el modulo y luego referirse a las clases.
+
+from ecommerce import products
+products.Product
+
+Si solo necesitamos una o dos clases de un modulo, podemos importarlas directamente.
+
+from ecommerce.proucts import Product
+
+* Relativa
+Se especifica el path del modulo que se quiere importar respecto a la posicion relativa del modulo actual.
+
+from .database import Database
+
+El punto indica que se quiere importar el modulo que se encuentra posicionado dentro de este mismo paquete.
+
+from ..database import Database
+
+Aqui los dos puntos indica que se importe el paquete que se encuentra en el modulo padre.
+
+* Organizando el contenido de modulos
+Todo el codigo que se encuentra a nivel de modulo, se ejecuta inmediatamente cuando se importa dicho modulo.
+Pero cuando el codigo se encuentra dentro de un metodo, no se ejecuta hasta que dicho metodo es llamado.
+Si no somos cuidadosos con la modularizacion dentro de nuestro codigo y su importacion, podemos terminar ejecutando codigo que no deseamos, 
+cuando en realidad lo unico que queriamos era usar unas cuantas funciones.
+
+Para evitar esto, siempre debemos poner nuestro codigo de ejecucion dentro de una funcion llamada main y solo se ejecutara cuando estemos ejecutando 
+dicho modulo como un script pero no cuando el codigo se importe en un script diferente.
+
+#+BEGIN_SRC python
+class UsefulClass:
+       '''This class might be useful to other modules.'''
+       pass
+   def main():
+       '''creates a useful class and does something with it for our
+   module.'''
+       useful = UsefulClass()
+       print(useful)
+   if __name__ == "__main__":
+       main()
+
+#+END_SRC python
+
+Todos los modulos tienen una variable interna llamada __name__ que especifica el nombre del modulo cuando se importa.
+Cuando el modulo es ejecutado directamente, no se importa, entonces la variable __name__ se establece de manera arbitrario como __main__.
+
+* Orden en los programas
+Metodos dentro de clases dentro de modulos dentro de paquetes.
+

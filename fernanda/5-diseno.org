@@ -1,0 +1,50 @@
+#-*- mode: org -*-
+
+* Analisis y Diseno
+1. Encontrar las clases y objetos
+2. Determinar responsabilidades
+3. Determinar colaboración entre objetos
+4. Accesabilidad de funciones y datos
+
+* Reloj
+Un reloj analogico consiste de una caratula con 2 manecillas,
+una para la hora y otra para los minutos.
+Cada manecilla tiene un valor entre 0 y 60 minutos o entre 0 y doce horas.
+
+El programa debe poder construir un reloj inicializado en 0hrs 0min o 
+un valor arbitario dado.
+Se debe poder incrementar el reloj.
+Poder establecer el reloj en un cierto valor y pedir al reloj que muestre su valor.
+
+Objetos:
+- Reloj
+- Manecillas horas
+- Manecillas minutos
+- Valor de horas
+- Valor de minutos
+- Valor del reloj
+- Limites
+
+Clases:
+- Reloj:
+-- Objetos (Privados): 
+--- Horas (manecilla con limite de 12)
+--- minutos (manecilla con limite de 60)
+-- Funciones (Publicas):
+--- Constructor
+--- incrementar
+--- poner valor
+--- mostrar
+
+- Manecilla:
+-- Objetos (privados):
+--- valor
+--- limite
+-- Funciones (publicas):
+--- constructor
+--- incrementar
+--- poner valor
+--- mostrar
+
+Existe una colaboracion de manecilla hacia reloj.
+

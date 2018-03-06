@@ -1,0 +1,43 @@
+#-*- mode: org -*-
+
+* Control de acceso
+Los metodos y atributos pueden ser accesibles por:
+- Privado: ese mismo objeto
+- Protegido: la misma clase y subclases
+- Publico: cualquier otro objeto.
+
+En Python el control de acceso no es estricto pero promueve instrucciones y mejores practicas para ello.
+Tecnicamente, todos los metodos y atributos son publicos. 
+Para sugerir que un metodo o atributo no sea publico se indica en la documentacion y se utiliza el guion bajo _ (Protegido) y doble guion bajo __ (Privado).
+Los programadores interpretan esto como: "Esta es una variable interna, piensa bien antes de usarla directamente".
+
+#+BEGIN_SRC python
+class CadenaSecreta:
+       '''A not-at-all secure way to store a secret string.'''
+       def __init__(self, plain_string, pass_phrase):
+           self.__plain_string = plain_string
+           self.__pass_phrase = pass_phrase
+       
+       def decrypt(self, pass_phrase):
+           '''Only show the string if the pass_phrase is correct.'''
+           if pass_phrase == self.__pass_phrase:
+               return self.__plain_string
+           else:
+               return ''
+
+secret_string = CadenaSecreta("ACME: Top Secret", "antwerp")
+print(secret_string.decrypt("antwerp"))
+ACME: Top Secret
+
+print(secret_string.__plain_text)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'SecretString' object has no attribute
+'__plain_text'
+
+print(secret_string._SecretString__plain_string)
+ACME: Top Secret
+#+END_SRC python
+
+Cuando usamos doble guion bajo, el atributo lleva como prefijo _<nombre de la clase>.
+Usar guion bajo no garantiza la privacidad, solo la recomienda fuertemente y un buen programador debe respetarla.

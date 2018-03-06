@@ -1,0 +1,54 @@
+#-*- mode: org -*-
+
+* Precision Finita
+El tipo flotante es un subconjunto de los reales y se les puede aplicar las mismas operaciones.
+
+Los numeros flotantes son aproximaciones a numeros reales.
+Las computadoras tienen una memoria finita y para eficientar las operaciones, algunos lenguajes limitan la cantidad de información que almacenan.
+
+2/3 no se puede guardar exacto y usar mas memoria no ayuda.
+2/3 ~ 0.666 haciendo calculos con esta aproximación el error se agranda.
+1 + 2/3 ~ 1.665 y en algunos programas 1 + 2/3 != 5/3
+
+* Sistemas Numéricos
+Usamos notacion decimal posicional donde el concepto del numero cero es importante.
+Cada símbolo tiene dos valores asociados: Peso y Posicion.
+
+Dependiendo de la posición de un digito es el peso que tiene.
+
+101000_2 = 1 * 2^5 + 0 * 2^4 + 1 * 2^3 + 0 * 2^2 + 0 * 2^1 + 0 * 2^0
+327.15_10 = 3 * 10^2 + 2 * 10^1 + 7 * 10^0 + 1 * 10^-1 + 5 * 10^-2
+BA7C_16 = 11 * 16^3 + 10 * 16^2 + 7 * 16^1 + 12 * 16^0 = 47740_10
+
+Decimos que es decimal porque utiliza el numero 10 como base donde cada posición lleva el peso de una potencia de 10 asignada.
+
+* Representación de la Información
+Debemos poder representar en la computadora numeros y letras en binario.
+Hay que transformar un caracter en su codigo de máquina y viceversa.
+Asignamos cierta cantidad de bits para representar una palabra.
+
+- Carateres Unicode: utiliza 16 bits por caracter, i.e. puedes escribir 2^16 caracteres distintos.
+- Numeros Enteros: utilizan 32 bits, i.e. podemos representar 0-2^32-1 numeros positivos.
+
+- Numeros Negativos:
+1. Signo y Magnitud: usamos un bit de la extrema izquierda para representar el signo. Tenemos 31 bits para la magnitud y 1 bit para el signo. 
+Es costoso hacer operaciones.
+2. Complemento a 2: El bit 15 representa el signo. Para sacar la magnitud se resta la palabra de otra palabara con una posicion mas, que tiene un 1 y el resto 0s.
+Fácil hacer operaciones aritmeticas.
+
+Representar -2:
+Decimal: 2
+Binario: 0010
+Complemento a 2: 1000
+Decimal del complemento a 2: 8
+2 - 8 = -6
+Binario de 6: 110
+Negativo del binario de 6: 1110 que es la representacion de -2
+
+
+- Numeros Reales
+1. Punto Fijo: notacion posicional binaria. Se fija el punto. Poco flexible (muchos decimales y pocos enteros). Se mantiene la notacion de complemento a 2 para negativos.
+   1011.0101 = -3.5
+2. Punto Flotante: Mantisa y exponente (notacion cientifica). Flexibilidad y precision.
+   1.34 * 10^2 == 134 == 13.4 * 10^1
+

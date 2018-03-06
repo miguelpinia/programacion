@@ -1,0 +1,113 @@
+#-*- mode: org -*-
+
+* Arquitectura Von Neumann
+La *arquitectura de una computadora* es la organización que tiene en sus componentes electronicos y cómo estan integrados.
+
+Arquitectura Von Neuman:
+- Procesador Central: ejecuta operaciones aritmetico-logicas.
+- Memoria Central: alamcenar datos, resultados intermedios y programas.
+- Unidades de entrada y salida: teclado, mouse, etc
+- Auxiliares: discos, etc.
+
+La memoria esta dividida en celdas iguales.
+
+Memoria Central
+^
+|
+
+Procesador Central
+^
+| 
+Dispositivos IO
+
+
+Un programa son los enunciado que le dicen al programa qué hacer.
+
+* Como se ejecuta un programa?
+*Harware:*
+- Procesador: ejecuta instrucciones
+- Disco Duro: almacena datos
+- Perifericos: monitor, teclador, etc.
+
+*Sistema Operativo*
+- Windows, Linux, MacOs
+- Unico programa con acceso directo al hardware
+- Permite que los programas corran en diferente hardware.
+
+Cuando se escribe un programa, no se ejecuta directamente en el SO, sino en otro programa llamado *Interprete o Maquina Virtual*.
+Toma el programa, lo ejecuta y lo convierte a lenguaje de SO.
+
+*Ventajas: *
+- Seguridad
+- Facilidad
+- Portabilidad
+
+Formas de usar el interprete de Python:
+1. Archivo con extension .py
+2. Comandos uno por uno usando el shell.
+
+
+              Programa Python
+                      ^
+                      |
+Aplicacion | Interprete Python
+^
+|
+HDD
+
+
+* Ejecucion de Programas
+Interprete: 
+1. Toma un enunciado de alto nivel llamado Codigo Fuente 
+2. Lo traduce y ejecuta 
+3. Repite hasta terminar
+
+Compilador:
+1. Toma todo el codigo fuente
+2. Lo traduce completo a lenguaje de maquina
+3. Lo ejecuta.
+
+Cualquier problema se puede resolver con cualquier lenguaje, pero A que costo?
+
+* Algoritmos
+*Algoritmo* es un método de solución para un problema que cumple con:
+1. Trabaja a partir de 0 o más datos. (entrada)
+2. Produce al menos un resultado (salida).
+3. Especificado por un numero finito de pasos (finitud).
+4. Cada paso es completo y comprensible (definicion).
+5. La ejecución del algoritmo lleva un tiempo finito (terminación).
+
+Nos interesa resolver problemas unicamente para lo que podemos dar un algoritmo de solución.
+Algunas soluciones no son algoritmicas.
+Hay mas problemas que soluciones.
+Que no pueda encontrar la solución no significa que no exista.
+
+* Aritmetica en Python
+Valores: objeto fundamental, letras numeros, constantes.
+Tipos: todos los valores en python tienen un tipo y determinan como se comportan cuando se combinan, int, float, str.
+
+Un tipo consiste de:
+1. Un conjunto de valores
+2. Un conjunto de operaciones que se puede aplicar.
+
+
+** Precedencia de operadores
+Precedencia   Operador    Operacion
+Mayor         **          Exponenciacion
+              -           Negación
+              *, /, //, % Multiplicacion, division, residuo
+Menor         +, -        Suma, resta
+
+
+ *PEMDAS* es una forma útil de recordar el orden de los operadores:
+
+- *P*arentesis tiene la mayor precedencia
+- *E*xponenciación
+- *M*ultiplicación y *D*ivisión
+- *A*sociatividad y *S*ustracción
+- Operadores con la misma precedencia son evaluados de izquierda a derecha
+
+5/9+2*a**4/2
+
+5/(9+2)*a**(4/2)
+

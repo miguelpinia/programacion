@@ -1,0 +1,85 @@
+#-*- mode: org -*-
+
+* Creando clases
+La clase mas simple de Python es:
+
+#+BEGIN_SRC python
+class Point:
+   pass
+#+END_SRC python
+
+La indentacion se utiliza para delimitar las clases, en lugar usar corchetes.
+*pass* indica que no hay mas acciones por hacer.
+
+Esta clase ya nos permite inicializar objetos:
+
+#+BEGIN_SRC 
+p1 = Point()
+p2 = Point()
+
+print(p1)
+<__main__.Point object at 0xb7b7faec>
+
+ print(p2)
+<__main__.Point object at 0xb7b7fbac>
+#+END_SRC python
+
+Instanciamos dos objetos llamados p1 y p2 del tipo Point.
+
+* Agregando Atributos
+Podemos agregarle atributos a nuestra clase:
+
+#+BEGIN_SRC 
+class Point:
+       pass
+
+p1 = Point()
+p2 = Point()
+p1.x = 5
+p1.y = 4
+p2.x = 3
+p2.y = 6
+print(p1.x, p1.y)
+print(p2.x, p2.y)
+#+END_SRC 
+
+Creamos una clase Point vacia sin atributos ni funciones.
+Luego creamos dos instancias  y les asignamos coordenadas x, y.
+Para asignar el valor de un atributo a un objeto usamos notacion de punto.
+
+* Agregando Metodos
+#+BEGIN_SRC 
+class Point:
+       def reset(self):
+           self.x = 0
+           self.y = 0
+
+p = Point()
+print(p.x, p.y)
+p.reset()
+print(p.x, p.y)
+#+END_SRC 
+
+Un metodo de una clase se escribe igual que una funcion.
+Los metodos requieren un parametro *self* que es una referencia al objeto que lo invoca.
+Sin embrago, cuando llamamos al metodo reset() no es necesario invocarlo con el argumento self.
+
+El metodo es una funcion que pertenece a una clase. 
+En lugar de llamar al metodo del objeto, podemos invocar a la funcion de la clase pasandole explicitamente nuestro objeto como argumento self.
+
+#+BEGIN_SRC 
+p = Point()
+Point.reset(p)
+print(p.x, p.y)
+#+END_SRC 
+
+Que pasa si olvidamos incluir el argumento self en la definicion de la clase?
+
+#+BEGIN_SRC 
+class Point:
+     def reset():
+         pass
+
+p = Point()
+p.reset()
+#+END_SRC 
