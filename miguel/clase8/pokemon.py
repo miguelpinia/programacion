@@ -83,15 +83,6 @@ class AguaElectrico(Agua, Electrico):
         return randint(0, 16)
 
 
-def mezcla(d1, d2):
-    d = {}
-    for k in d1:
-        d[k] = d1[k]
-    for k in d2:
-        d[k] = d2[k]
-    return d
-
-
 def imprimeAtaque(pokemon):
     l = []
     for i, k in enumerate(pokemon.ataques):
