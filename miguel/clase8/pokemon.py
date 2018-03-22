@@ -1,6 +1,5 @@
 #!/usr/bin/python
-
-from random import randint
+from random import randint, randrange
 
 class Pokemon:
     """
@@ -91,3 +90,41 @@ def imprimeAtaque(pokemon):
     index = int(input('Selecciona un ataque\n'))
     assert 0 < index < len(pokemon.ataques), 'Valor erróneo'
     return l[index - 1]
+
+
+class Jugador(object):
+
+    def __init__(self, nombre, pokemon1, pokemon2):
+        self.nombre = nombre
+        self.pokemon1 = pokemon1
+        self.pokemon2 = pokemon2
+
+    def hayPokemons(self):
+        return self.pokemon1.estaVivo() or self.pokemon2.estaVivo()
+
+
+class JugadorNPC(Jugador):
+    def __init__(self, nombre, pokemon1, pokemon2):
+        super(JugadorNPC, self).__init__(nombre, pokemon1, pokemon2)
+
+
+def todaviaHayConQueJugar(jugador1, jugador2):
+    return jugador1.hayPokemons() and jugador2.hayPokemons()
+
+def batalla():
+    p = Agua('Squirtle')
+    p2 = Electrico('Pikachu')
+    jugador = Jugador('Red', p, p2)
+    p3 = Agua('Foo')
+    p4 = Agua('Vaporeon')
+    jugadorNPC = JugadorNPC('Bot', p3, p4)
+    mi_turno = bool(randrange(2))
+    while todaviaHayConQueJugar(jugador, jugadorNPC):
+        if mi_turno:
+            if jugador.pokemon1.estaVivo():
+                print('Hola pokemon 1')
+            else:
+                print('ataco con el otro')
+        else:
+            print('Jugador no controlable')
+        mi_turno = not mi_turno
