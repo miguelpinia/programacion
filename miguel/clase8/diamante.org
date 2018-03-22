@@ -1,0 +1,59 @@
+#+title: Problema del diamante
+#+author: Miguel Piña
+#+date: [2018-03-21 mié 19:11]
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+
+El problema del diamante (a veces referido como *deadly diamond problem*), se
+refiere generalmente al término usado para la ambigüedad que se da cuando dos
+clases *B* y *C* heredan de una superclase *A* y otra clase *D* hereda de *B* y *C*.
+
+Si hay un método "m" en *A* en el que B o C (o incluso ambos) han sobreescrito y
+si *D* no ha sobreescrito este método, la pregunta es, ¿qué versión del método va a
+heredar *D*? ¿Va  a ser el de *A*, *B* o *C*?
+
+Veamos un primer ejemplo, A, B, C sobreescriben el método m:
+
+#+begin_src python
+class A:
+    def m(self):
+        print("m of A called")
+
+class B(A):
+    def m(self):
+        print("m of B called")
+
+class C(A):
+    def m(self):
+        print("m of C called")
+
+class D(B,C):
+    pass
+#+end_src
+
+
+Si llamamos el método m de una instancia x de D, es decir, x.m(), vamos a tener
+como salida "m of B called". Si intercambiamos el orden de las clases en el la
+descripción de la clase D, de modo que sea "class D(C, B)", vamos a tener como
+salida "m of C called"
+
+El caso en el que m es sobreescerito solo por una de las clases B o C, por
+ejemplo, en C:
+
+#+begin_src python
+class A:
+    def m(self):
+        print("m of A called")
+
+class B(A):
+    pass
+
+class C(A):
+    def m(self):
+        print("m of C called")
+
+class D(B,C):
+    pass
+
+x = D()
+#+end_src
