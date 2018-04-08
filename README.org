@@ -23,3 +23,4 @@ git clone https://github.com/miguelpinia/programacion.git
 * Prácticas
 
 - [[file:Practicas/practica-1.org][Práctica 1]]
+- [[file:Practicas/practica-2.org][Práctica 2]]
