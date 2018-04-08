@@ -53,5 +53,5 @@ zip} entregar los siguientes archivos:
 Se debe enviar el archivo comprimido al correo miguel_pinia@ciencias.unam.mx,
 con el subject: *Programación 2018-2: Práctica 2*
 
-La fecha de entrega es el día *14 de abril del 2017* antes de las *23:59*. Después
+La fecha de entrega es el día *14 de abril del 2018* antes de las *23:59*. Después
 de esa hora ya no se reciben trabajos.
