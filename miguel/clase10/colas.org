@@ -1,0 +1,49 @@
+#+title: Colas
+#+author: Miguel Piña
+#+date: [2018-04-10 mar 06:10]
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+* ¿Qué es una cola?
+
+Una cola (también llamada fila) es una estructura de datos, caracterizada por
+ser una secuencia de elementos en la que la operación de inserción push se
+realiza por un extremo y la operación de extracción pop por el otro. También se
+le llama estructura FIFO (del inglés First In First Out), debido a que el primer
+elemento en entrar será también el primero en salir.
+
+* ADT de una cola
+
+El ADT de una cola  está definida por las siguientes estructura y
+operaciones. Una cola está estructurada como una colección ordenada de
+elementos, donde los elementos son añadidos desde el «final» de la
+cola y eliminados desde el «principio». Las colas son FIFO. Una cola va a tener
+las siguientes operaciones:
+
+
+- Queue() :: Construye una nueva cola vacía. No necesita parámetros y regresa
+             una cola vacía.
+- enqueue(x) :: Agrega un nuevo elemento en el final de la cola. Necesita el
+                elemento y no regresa nada.
+- dequeue() :: Elimina el elemento que esta en el principio de la cola. No
+               necesita parámetros y devuelve el elemento que se eliminó.
+- front () :: Regresa el elemento que se encuentra en el inicio de la
+     cola pero no lo elimina. No necesita parámetros, no modifica la pila.
+- isEmpty() :: Verifica si la cola está vacía. No necesita parámetros y regresa
+     un valor booleano.
+- size() :: Regresa el número de elementos en la cola. No necesita parámetros y
+     regresa un entero.
+
+
+| Stack Operation | Stack Contents     | Return Value |
+|-----------------+--------------------+--------------|
+| s.isEmpty()     | 	[]             |         True |
+| s.queue(4)      | [4]                |              |
+| s.queue('dog')  | [4,'dog']          |              |
+| s.peek()        | [4,'dog']          |            4 |
+| s.queue(True)   | [4,'dog',True]     |              |
+| s.size()        | [4,'dog',True]     |            3 |
+| s.isEmpty()     | [4,'dog',True]     |        False |
+| s.queue(8.4)    | [4,'dog',True,8.4] |              |
+| s.dequeue()     | ['dog',True, 8.4]  |            4 |
+| s.dequeue()     | [True, 8.4]        |        'dog' |
+| s.size()        | [True, 8.4]        |            2 |
