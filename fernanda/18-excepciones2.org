@@ -1,0 +1,76 @@
+#-*- mode: org -*-
+
+* Manejando excepciones
+Para manejar las excepciones debemos envolver el pedazo de codigo que puede fallar dentro de una clausula try...except
+
+#+END_SRC python
+try:
+       no_return()
+except:
+       print("Yo cache una excepcion")
+print("Esto se ejecuta despues de la excepcion")
+#+END_SRC python
+
+Se informa de la excepcion que ocurrio y el programa continua su ejecucion sin interferencias.
+Dentro la funcion no_return(), el resto del codigo despues de la excepcion no se ejecuta.
+
+A veces queremos diferenciar excepciones, unas que detengan todo el programa y otras que dejen seguir la ejecucion:
+
+#+BEGIN_SRC python
+def funny_division(divider):
+       try:
+           return 100 / divider
+       except ZeroDivisionError:
+           return "No existe division entre Zero!"
+
+print(funny_division(0))
+print(funny_division(50.0))
+print(funny_division("Hola"))
+#+END_SRC python
+
+Tambien podemos cachar dos o mas tipos diferentes de excepciones y manejarlas con el mismo codigo:
+
+#+BEGIN_SRC python
+def funny_division2(anumber):
+       try:
+           if anumber == 13:
+               raise ValueError("13 es un numero de mala suerte!")
+           return 100 / anumber
+       except (ZeroDivisionError, TypeError):
+           return "No acepto Zeros"
+
+for val in (0, "hola", 50.0, 13):
+       print("Testing {}:".format(val), end=" ")
+       print(funny_division2(val))
+#+END_SRC python
+
+Tambien se podrian separar las excepcciones y que cada una mostrara un mensaje de error especial.
+
+Queremos poder ejecutar codigo sin importar si ha o no ocurrido una excepcion.
+Para eso tenemos las clausulas finally y except
+
+#+BEGIN_SRC python
+import random
+   some_exceptions = [ValueError, TypeError, IndexError, None]
+   try:
+       choice = random.choice(some_exceptions)
+       print("Levantando {}".format(choice))
+       if choice:
+           raise choice("Error!!")
+   except ValueError:
+       print("Tengo un ValueError")
+   except TypeError:
+       print("Tengo un TypeError")
+   except Exception as e:
+       print("Otro tipo de error: %s" %
+           ( e.__class__.__name__))
+else:
+       print("Esta parte se ejecuta si no hay exception")
+finally:
+       print("Esta parte limpia el codigo y siempre se ejecuta")
+#+END_SRC python
+
+La clausula finally siempre se ejecuta y esto es util en casos como:
+- Cerrar un archivo
+- Cerrar la conexion a una base de datos
+- Cerrar conexiones en una red

@@ -1,0 +1,58 @@
+#-*- mode: org -*-
+
+* Herencia
+En el mundo de la programacion, duplicar codigo es imperdonable!
+Para evitar esto surge el concepto de *Herencia*.
+La herencia permite crear relaciones "es un" entre dos o mas clases.
+
+** Herencia Basica
+Todas las clases que creamos usan herencia.
+Todas las clases de Python son subclases de la clase object y permite tratar a todos los objetos de la misma manera.
+
+*Super clase* o clase padre es la clase de la que se va a heredar.
+*Sub clase* es la clase que hereda de la super clase.
+
+#+BEGIN_SRC python
+class MySubClass(object):
+    pass
+#+END_SRC python
+
+La forma mas simple de aplicar herencia en la practica es agregando funcionalidad a la clase ya existente.
+
+*** Ejemplo
+Un manejador de contactos que mantiene el nombre y correo de las personas.
+La clase contacto es responsable de mantener una lista de contactos
+
+#+BEGIN_SRC python
+class Contact:
+       all_contacts = []
+       def __init__(self, name, email):
+           self.name = name
+           self.email = email
+           Contact.all_contacts.append(self)
+#+END_SRC python
+
+Ademas, cada contacto tiene proveedores de servicios.
+Necesitamos una clase proveedor que sea un tipo de contacto al cual se le pueden hacer pedidos.
+
+#+BEGIN_SRC python
+class Supplier(Contact):
+       def order(self, order):
+           print("Enviando " + order + " a " + self.name)
+#+END_SRC python
+
+Todos los contactos tienen nombre y correo, pero solo los proveedores tienen un metodo de pedido.
+
+#+BEGIN_SRC python
+c = Contact("Some Body", "somebody@example.net")
+s = Supplier("Sup Plier", "supplier@example.net")
+print(c.name, c.email, s.name, s.email)
+
+print(c.all_contacts)
+
+print(c.order("Necesito clavos"))
+
+print(s.order("Necesito clavos"))
+#+END_SRC python
+
+

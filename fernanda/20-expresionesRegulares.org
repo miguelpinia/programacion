@@ -1,0 +1,148 @@
+#-*- mode: org -*-
+
+* Expresiones Regulares
+De las cosas mas dificiles y mas utiles cuando usamos cadenas es analizar sintacticamente una cadena.
+A esto se le conoce como *Parsing* y generalemente es manejado usando *Expresiones Regulares*.
+
+Las expresiones regulares permiten resolver problemas como: determinar si una cadena tiene un patron de caracteres
+o extraer subcadenas con cierto parametros.
+
+** Apareamiento de Patrones
+Las expresiones regulares son un complicado mini-lenguaje que usa caracteres especiales para aparear cadenas desconocidas.
+
+#+BEGIN_SRC python
+import re
+
+search_string = "hello world"
+pattern = "hello world"
+
+# Este patron si caza
+# pattern = "hello wo"
+
+# Este patron no caza
+# pattern = "ello world"
+
+match = re.match(pattern, search_string)
+if match:
+       print("regex matches")
+else:
+       print("No matches")
+#+END_SRC python
+
+La biblioteca estandard de Python para espresiones regulares es *re*.
+La funcion *match* caza el patron desde el principio de la cadena y se detiene tan pronto encuentra la cadena.
+
+El simbolo *^* representa el inicio de una cadena
+El simbolo *$* representa el final de una cadena
+
+** Apareamiento de una seleccion de caracteres
+Vamos a aparear un caracter en particular.
+El caracter *.*, usado en expresiones regulares, puede aparear cualquier caracter simple.
+Entonces, poner un punto en una cadena significa que no importa qué caracter sea mientras haya un caracter en esa posicion.
+
+#+BEGIN_SRC python
+import re
+
+def match(pattern, search_string):
+   match = re.match(pattern, search_string)
+   if match:
+      template = "'{}' matches pattern '{}'"
+   else:
+       template = "'{}' does not match pattern '{}'"
+   print(template.format(search_string, pattern))
+
+search_string = "hello world" 
+pattern = "hel.o world"
+match(pattern, search_string)
+
+search_string = "helpo world" 
+pattern = "hel.o world"
+match(pattern, search_string)
+
+search_string = "hel o world" 
+pattern = "hel.o world"
+match(pattern, search_string)
+
+search_string = "helo world" 
+pattern = "hel.o world"
+match(pattern, search_string)
+#+END_SRC python
+
+Si solo buscamos caracteres especificos podemos poner el conjunto de caracteres dentro de [] para que cazen cualquiera de esos caracteres.
+
+#+BEGIN_SRC python
+search_string = "hello world" 
+pattern = "hel[lp]o world"
+match(pattern, search_string)
+
+search_string = "helpo world" 
+pattern = "hel[lp]o world"
+match(pattern, search_string)
+
+search_string = "helPo world" 
+pattern = "hel[lp]o world"
+match(pattern, search_string)
+#+END_SRC python
+
+El uso del *-* permite crear un rango de caracteres.
+Esto es util si quieres buscar "todas las letras minusculas" o "todos los numeros", etc.
+
+#+BEGIN_SRC python
+search_string = "hello world" 
+pattern = "hello [a-z] world"
+match(pattern, search_string)
+
+search_string = "hello b world" 
+pattern = "hello [a-z] world"
+match(pattern, search_string)
+
+search_string = "hello B world" 
+pattern = "hello [a-zA-Z] world"
+match(pattern, search_string)
+
+search_string = "hello 2 world" 
+pattern = "hello [a-zA-Z0-9] world"
+match(pattern, search_string)
+#+END_SRC python
+
+** Escapando Caracteres
+Podemos usar *\* para escapar caracteres
+
+Para cazar numeros decimales de dos digitos:
+#+BEGIN_SRC python
+search_string = "0.05" 
+pattern = "0\.[0-9][0-9]"
+match(pattern, search_string)
+
+search_string = "005" 
+pattern = "0\.[0-9][0-9]"
+match(pattern, search_string)
+
+search_string = "0,05" 
+pattern = "0\.[0-9][0-9]"
+match(pattern, search_string)
+#+END_SRC python
+
+Otros caracteres de escape:
+- \s representan espacios en blanco
+- \w representan letras, numeros y guion bajo
+- \d representan un digito
+
+
+#+BEGIN_SRC python
+search_string = "(abc]"
+pattern = "\(abc\]"
+match(pattern, search_string)
+
+search_string = " 1a"
+pattern = "\s\d\w"
+match(pattern, search_string)
+
+search_string = "\t5n"
+pattern = "\s\d\w"
+match(pattern, search_string)
+
+search_string = "5n"
+pattern = "\s\d\w"
+match(pattern, search_string)
+#+END_SRC python

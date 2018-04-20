@@ -1,0 +1,121 @@
+#-*- mode: org -*-
+
+* Apareando Multiples Caracteres
+La mayor parte del tiempo no sabemos cuantos caracteres cazan dentro de un patron.
+El simbolo de asterisco indica que el patron anterior puede aparecer 0 o mas veces.
+
+#+BEGIN_SRC python
+search_string = "hello" 
+pattern = "hel*o"
+match(pattern, search_string)
+
+search_string = "heo" 
+pattern = "hel*o"
+match(pattern, search_string)
+
+search_string = "hellllllo" 
+pattern = "hel*o"
+match(pattern, search_string)
+#+END_SRC python
+
+El patron anterior, la letra l, es opcional y se puede repetir todas las veces.
+Podemos combinar el * con patrones que cazen multiples caracteres.
+
+#+BEGIN_SRC python
+search_string = "A string." 
+pattern = "[A-Z][a-z]* [a-z]*\."
+match(pattern, search_string)
+
+search_string = "No ." 
+pattern = "[A-Z][a-z]* [a-z]*\."
+match(pattern, search_string)
+
+search_string = "" 
+pattern = "[a-z]*.*"
+match(pattern, search_string)
+#+END_SRC python
+
+El signo + indica que el patron anterior puede aparecer 1 o mas veces
+El signo ? asegura que un patron aparece exactamente 0 o 1 vez pero no mas.
+
+#+BEGIN_SRC python
+search_string = "0.4" 
+pattern = "\d+\.\d+"
+match(pattern, search_string)
+
+search_string = "1.002" 
+pattern = "\d+\.\d+"
+match(pattern, search_string)
+
+search_string = "1." 
+pattern = "\d+\.\d+"
+match(pattern, search_string)
+
+search_string = "1%" 
+pattern = "\d?\d%"
+match(pattern, search_string)
+
+search_string = "999%" 
+pattern = "\d?\d%"
+match(pattern, search_string)
+#+END_SRC python
+
+
+* Agrupando Patrones
+Podemos encerrar un conjunto de patrones dentro de parentesis para tratarlos como un solo patron.
+Con esto ya podemos cazar oraciones del lenguaje natural.
+
+#+BEGIN_SRC python
+'abccc' matches pattern 'abc{3}'
+'abccc' does not match pattern '(abc){3}'
+'abcabcabc' matches pattern '(abc){3}'
+
+'Eat.' matches pattern '[A-Z][a-z]*( [a-z]+)*\.$'
+'Eat more good food.' matches pattern '[A-Z][a-z]*( [a-z]+)*\.$'
+'A good meal.' matches pattern '[A-Z][a-z]*( [a-z]+)*\.$'
+#+END_SRC python
+
+
+* Obteniendo informacion de Expresiones Regulares
+Las expresiones regulares permiten encontrar patrones dentro de una cadena, 
+pero tambien obtener subcadenas de los patrones encontrados.
+
+#+BEGIN_SRC python
+pattern = "^[a-zA-Z.]+@([a-z.]*\.[a-z]+)$"
+search_string = "some.user@example.com"
+match = re.match(pattern, search_string)
+if match:
+       domain = match.groups()[0]
+       print(domain)
+#+END_SRC python
+
+El patron describe un correo electronico simple.
+Queremos recuperar el nombre del dominio, asi que encapsulamos esa parte del patron en un groups().
+
+El metodo groups() devuelve una tupla de todos los grupos que cazaron el patron.
+Los groups() estan ordenados, ademas pueden estar anidados i.e puede haber un grupo dentro de otro.
+En este caso, los grupos son regresados en el orden de izquierda a derecha, asi que el grupo mas externo
+es devuelto antes que el mas interno.
+
+La funcion search() encuentra la primera instancia de un patron quitando la restriccion de que el patron debe
+empezar en la primera letra de la palabra
+
+La función findAll() encuentra todos las instancias de un patron que no se traslapan.
+
+La función compile regresa una version compilada de la expresion regular, 
+que permite reusar el mismo patron muchas veces de manera eficiente.
+
+#+BEGIN_SRC python
+import re
+re.findall('a.', 'abacadefagah')
+# ['ab', 'ac', 'ad', 'ag', 'ah']
+
+re.findall('a(.)', 'abacadefagah')
+# ['b', 'c', 'd', 'g', 'h']
+
+re.findall('(a)(.)', 'abacadefagah')
+# [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'g'), ('a', 'h')]
+
+re.findall('((a)(.))', 'abacadefagah')
+# [('ab', 'a', 'b'), ('ac', 'a', 'c'), ('ad', 'a', 'd'), ('ag', 'a', 'g'), ('ah', 'a', 'h')]
+#+END_SRC python

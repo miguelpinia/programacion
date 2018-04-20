@@ -1,0 +1,101 @@
+#-*- mode: org -*-
+
+* Herencia Multiple 
+Revisando otro ejemplo
+#+BEGIN_SRC python
+class BaseClass:
+       num_base_calls = 0
+       def call_me(self):
+           print("Calling method on Base Class")
+           self.num_base_calls += 1
+   
+class LeftSubclass(BaseClass):
+       num_left_calls = 0
+       def call_me(self):
+           BaseClass.call_me(self)
+           print("Calling method on Left Subclass")
+           self.num_left_calls += 1
+
+class RightSubclass(BaseClass):
+       num_right_calls = 0
+       def call_me(self):
+           BaseClass.call_me(self)
+           print("Calling method on Right Subclass")
+           self.num_right_calls += 1
+
+class Subclass(LeftSubclass, RightSubclass):
+       num_sub_calls = 0
+       def call_me(self):
+           LeftSubclass.call_me(self)
+           RightSubclass.call_me(self) 
+           print("Calling method on Subclass") 
+           self.num_sub_calls += 1
+#+END_SRC python
+
+Este ejemplo solo asegura que cada sobreescritura del metodo call_me, llama directamente al metodo de la clase padre con el mismo nombre.
+Cada vez que llamamos al metodo se imprime la informacion. Ademas hay una variable que muestra cuantas veces se llamo al metodo.
+
+#+Begin_SRC python
+s = Subclass()
+s.call_me()
+Calling method on Base Class 
+Calling method on Left Subclass 
+Calling method on Base Class 
+Calling method on Right Subclass 
+Calling method on Subclass
+
+print(
+ s.num_sub_calls,
+ s.num_left_calls,
+ s.num_right_calls,
+ s.num_base_calls)
+111 2
+#+END_SRC python
+
+El metodo de la clase base se llama 2 veces.
+Si ese metodo estuviera en realidad haciendo un deposito bancario, lo haria dos veces.
+
+Para solucionar este problema, queremos llamar al siguiente metodo en la clase de jerarquias y no al metodo padre, utilizando super().
+
+#+BEGIN_SRC python
+class BaseClass:
+    num_base_calls = 0
+    def call_me(self):
+        print("Calling method on Base Class")
+        self.num_base_calls += 1
+
+class LeftSubclass(BaseClass):
+    num_left_calls = 0
+    def call_me(self):
+        super(LeftSubclass,self).call_me()
+        print("Calling method on Left Subclass")
+        self.num_left_calls += 1
+
+class RightSubclass(BaseClass):
+    num_right_calls = 0
+    def call_me(self):
+        super(RightSubclass,self).call_me()
+        print("Calling method on Right Subclass")
+        self.num_right_calls += 1
+
+class Subclass(LeftSubclass, RightSubclass):
+    num_sub_calls = 0
+    def call_me(self):
+        super(Subclass,self).call_me()
+        print("Calling method on Subclass")
+        self.num_sub_calls += 1
+
+s = Subclass()
+s.call_me()
+# Calling method on Base Class
+# Calling method on Right Subclass
+# Calling method on Left Subclass
+# Calling method on Subclass
+
+print(s.num_sub_calls, s.num_left_calls, s.num_right_calls, s.num_base_calls)
+# 111 1
+
+print(s.mro())
+#+END_SRC python
+
+La forma en que Python resuelve el problema esta basado en un algoritmo de linearizacion, donde se rompe la estructura de arbol en una orden lineal.

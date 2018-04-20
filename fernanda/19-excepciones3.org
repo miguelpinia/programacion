@@ -1,0 +1,72 @@
+#-*- mode: org -*-
+
+* Jerarquia de Excepciones
+Todas las excepciones deben extender la clase BaseException o una de sus subclases.
+
+Hay dos clases de excepciones bases:
+- SystemExit: el programa termina naturalmente 
+- KeyboardInterrupt: el programa es interrumpido explicitamente por el teclado
+que derivan de la clase BaseException
+
+
+- BaseException
+--- SystemExit
+--- KeyboardInterrupt
+--- Exception
+----- Otras Excepciones
+
+* Definiendo excepciones
+Podemos definir nuevas excepciones por nuestra cuenta.
+El nombre de la clase indica que fue lo que ocurrio mal y los argumentos con que se inicializa dan informacion adicional.
+
+Debemos heredar de la clase Exception.
+
+#+BEGIN_SRC python
+class InvalidWithdrawal(Exception):
+       pass
+
+raise InvalidWithdrawal("Saldo insuficiente en cuenta")
+#+END_SRC python
+
+Cuando se inicializa una excepcion generalmente se pasa como argumento una cadena informativa pero se puede personalizar mas. 
+
+#+BEGIN_SRC python
+class InvalidWithdrawal(Exception):
+       def __init__(self, balance, amount):
+           super().__init__("Saldo insuficiente ${}".format(
+amount))
+           self.amount = amount
+           self.balance = balance
+
+       def overage(self):
+           return self.amount - self.balance
+
+raise InvalidWithdrawal(25, 50)
+
+try:
+       raise InvalidWithdrawal(25, 50)
+except InvalidWithdrawal as e:
+       print("Tu retiro es mayor que tu balance por  "
+               "${}".format(e.overage()))
+       print(e.args)
+#+END_SRC python
+
+Generalmente se sigue la filosofia: "Es mejor perdir perdon que pedir permiso", que significa
+ejecuta el codigo y luego te preocupas por lo que ocurrio mal.
+Es mejor usar excepciones para circunstancias excepcionales.
+
+#+BEGINr, divisor):
+try:
+           print("{} / {} = {}".format(
+               number, divisor, number / divisor * 1.0))
+except ZeroDivisionError:
+           print("Division invalida entre cero")
+
+   
+def divide_with_if(number, divisor):
+       if divisor == 0:
+           print("Division invalida entre cero")
+       else:
+           print("{} / {} = {}".format(
+               number, divisor, number / divisor * 1.0))
+#+END_SRC python

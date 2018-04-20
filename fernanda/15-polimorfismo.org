@@ -1,0 +1,102 @@
+#-*- mode: org -*-
+
+* Polimorfismo
+Describe el concepto de diferentes comportamientos de un metodo, dependiendo de la subclase que lo invoque.
+
+Imagina un programa que reproduce audio. 
+El reproductor necesita cargar un archivo de audio y luego reproducirlo.
+Esto puede ser tan facil como: audio_file.play()
+
+Sin embargo, se necesitan diferentes algoritmos de decompresion dependiendo el formato del audio, mp3, wav o ogg.
+Podemos usar herencia con polimorfismo donde cada subclase representa un formato de compresion y cada uno con su propio metodo play().
+
+#+BEGIN_SRC python
+class AudioFile:
+       def __init__(self, filename):
+           if not filename.endswith(self.ext):
+               raise Exception("Invalid file format")
+           self.filename = filename
+   
+class MP3File(AudioFile):
+       ext = "mp3"
+       def play(self):
+           print("playing {} as mp3".format(self.filename))
+
+class WavFile(AudioFile):
+      ext = "wav"
+      def play(self):
+          print("playing {} as wav".format(self.filename))
+   
+class OggFile(AudioFile):
+       ext = "ogg"
+       def play(self):
+          print("playing {} as ogg".format(self.filename))
+
+
+# playing myfile.ogg as ogg
+
+mp3 = MP3File("myfile.mp3")
+mp3.play()
+# playing myfile.mp3 as mp3
+
+not_an_mp3 = MP3File("myfile.ogg")
+# Traceback (most recent call last):
+#  File "<stdin>", line 1, in <module>
+#  File "polymorphic_audio.py", line 4, in __init__
+#    raise Exception("Invalid file format")
+# Exception: Invalid file format
+
+#+END_SRC python
+
+El metodo __init__ de la clase padre tiene acceso a la variable ext de las subclases. Eso es polimorfismo!
+Ademas, cada subclase implementa el metodo play() a su propia manera, 
+pero el reproductor de audio puede usar el mismo metodo para reproducir un audio sin importar su formato.
+
+#+BEGIN_SRC python
+class FlacFile:
+       def __init__(self, filename):
+           if not filename.endswith(".flac"):
+               raise Exception("Invalid file format")
+           self.filename = filename
+
+       def play(self):
+           print("playing {} as flac".format(self.filename))
+#+END_SRC python
+
+Este ejemplo no hereda de la clase AudioFile pero puede interactuar usando la misma interface.
+El polimorfismo es una de las mas importantes razones para usar herencia en OO.
+
+
+* Duck Typing
+"Si se ve como un pato, nada como un pato y hace como un pato, entonces es un pato."
+
+Permite usar cualquier metodo de un objeto sin forzarlo a ser una subclase.
+Así, se reduce la necesidad de super clases polimorficas y herencia multiple.
+
+#+BEGIN_SRC python
+class Parrot:
+    def fly(self):
+        print("Parrot flying")
+
+class Airplane:
+    def fly(self):
+        print("Airplane flying")
+
+class Whale:
+    def swim(self):
+        print("Whale swimming")
+
+def lift_off(entity):
+    entity.fly()
+
+parrot = Parrot()
+airplane = Airplane()
+whale = Whale()
+
+lift_off(parrot) # prints `Parrot flying`
+lift_off(airplane) # prints `Airplane flying`
+lift_off(whale) # Throws the error `'Whale' object has no attribute 'fly'`
+#+END_SRC python
+
+La idea es que no importa el tipo de los datos, solo si pueden o no hacer lo que necesito.
+

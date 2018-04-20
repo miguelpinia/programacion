@@ -1,0 +1,182 @@
+#-*- mode: org -*-
+
+* Herencia Multiple
+Si en tu programa piensas que necesitas herencia multiple, probablemente estes mal.
+
+En la herencia multiple una subclase hereda atributos de mas de una clase padre y puede acceder a las funciones de ambos.
+En la practica, esto es menos util de lo que parece.
+
+La herencia multiple funciona bien cuando se mezclan metodos de diferentes clases, pero es un desastre cuando se hay que llamar metodos de las superclases.
+Hay muchas superclases. Como sabemos a cual llamar? Cual es el orden en el que se llaman?
+
+** Ejemplo
+Supongamos que tenemos una clase base con un metodo m(), otras dos subclases sobreescriben el metodo 
+y una tercera subclase extiende a las dos anteriores usando herencia multiple.
+Esto es llamado *Herencia de Diamante*.
+
+El primer problema de diamante es cuando  las subclases sobreescriben el metodo padre.
+#+BEGIN_SRC python
+class A:
+    def m(self):
+        print("m of A called")
+
+class B(A):
+    def m(self):
+        print("m of B called")
+    
+class C(A):
+    def m(self):
+        print("m of C called")
+
+class D(B,C):
+    pass
+
+x = D()
+x.m()
+
+#Cambiando el orden de herencia
+class D(C,B):
+    pass
+
+x = D()
+x.m()
+#+END_SRC python
+
+La forma en que Python resulve el problema del orden de busqueda en las clases base esta definido en el MRO (Method Resolution Order).
+El MRO cambio de la version de python2 a python3.
+
+Comentando el metodo m de la clase B:
+#+BEGIN_SRC python
+class A:
+    def m(self):
+        print("m of A called")
+
+class B(A):
+    pass
+
+class C(A):
+    def m(self):
+        print("m of C called")
+
+class D(B,C):
+    pass
+
+x = D()
+x.m()
+
+#Cambiando el orden de herencia
+class D(C,B):
+    pass
+
+x = D()
+x.m()
+
+>python2 foo.py
+>>> m of A called
+
+>python3 foo.py
+>>> m of C called
+#+END_SRC python
+
+Esto se debe al comportamiento del algoritmo MRO. 
+
+Cuando una clase hereda de múltiples padres, 
+Python crea una lista de clases para buscar cuando necesita resolver qué método debe invocarse cuando uno es invocado por una instancia.
+Este algoritmo es un enrutamiento de árboles, y funciona de esta manera, en primer lugar, de izquierda a derecha:
+1. Mira si el método existe en la clase de instancia
+2. Si no, mira si existe en su primer padre, luego en el padre del padre y así sucesivamente
+3. Si no, se ve si la clase actual hereda de otras clases hasta la instancia actual de otros padres.
+
+Entonces, en nuestro ejemplo, la ruta de búsqueda del algoritmo es: D, B, A, C, A.
+Una clase no puede aparecer dos veces en la ruta de búsqueda, por lo que la versión final es D, B, A, C:
+
+Buscando en D
+Si no se encuentra, busca en B
+Si no se encuentra, buscando un B primer padre A
+Si no se encuentra, regresando en B otros padres (ninguno)
+Si no se encuentra, busca en D otros padres: C
+
+Ahora vamos a extender el problema para que todas las clases sobreescriban el metodo m:
+#+BEGIN_SRC python
+class A:
+    def m(self):
+        print("m of A called")
+
+class B(A):
+    def m(self):
+        print("m of B called")
+    
+class C(A):
+    def m(self):
+        print("m of C called")
+
+class D(B,C):
+    def m(self):
+        print("m of D called")
+
+x = D()
+B.m(x)
+# m of B called
+C.m(x)
+# m of C called
+A.m(x)
+# m of A called
+
+#+END_SRC python
+
+Si ejecuta el primer script usando python3, el comportamiento del algoritmo cambia.
+Esto se debe a que en Python3 se usa la clase object como clase principal para el nuevo algoritmo MRO.
+
+La definición del nuevo algoritmo de clases es el mismo que el anterior, excepto con esta diferencia: 
+Cada vez que se encuentra una clase en el ruta de búsqueda, Python hizo la pregunta:
+ «¿Es una buena cabeza? »Y si no, elimina la clase de la ruta de búsqueda final.
+Entonces, ¿qué es una «buena cabeza»?
+Se dice que una clase es una «buena cabeza» si no hay otra clase en la cola de la ruta de búsqueda que hereda de ella. 
+En este caso, es más natural usar el método definido por su clase derivada.
+
+Entonces, en python2, la ruta de búsqueda (enrutamiento de árbol sin simplificación) es D, B, A, C, A.
+Una vez creado, Python intenta eliminar las entradas duplicadas con la pregunta "buena cabeza?". 
+D y B son buenos, ya que no existe una clase derivada en la cola de la ruta después de la posición que hereda de ellos.
+
+Cuando es la primera ocurrencia de clase A, 
+Python pregunta a la clase A: «¿Eres una buena cabeza»? 
+Y la respuesta es: «No, no he sido muy amable hoy, he intentado robarle el lugar a mi hijo clase C, 
+que hereda de mí y está en la cola de la búsqueda después de mí». 
+Entonces Python elimina A de la ruta de búsqueda en este punto que se convierte en D, B, C, A.
+
+
+* Metodo de Resolucion Imposible
+Algunas veces no hay un buen camino para encontrar el MRO.
+
+#+BEGIN_SRC python
+class X():
+    def m(self):
+       print("m of X called")
+    
+class Y():
+    def m(self):
+       print("m of Y called")
+    
+class A(X, Y):
+    def m(self):
+       print("m of A called")
+    
+class B(Y, X):
+    def m(self):
+       print("m of A called")
+
+class D (A, B):
+    def m(self):
+       print("m of D called")
+
+x = D()
+x.m()
+
+>python2 foo.py
+>>> m of D called
+ # En python2 el metodo de busqueda es F, A, X, Y, B 
+
+>python3 foo.py
+>>> TypeError: Cannot create a consistent method resolution order (MRO) for bases C, B 
+ # En python3 el metodo de busqueda es  F, A, X, Y, B, Y, X y removiendo malas cabezas:  F, A, B, Y, X
+#+END_SRC python
