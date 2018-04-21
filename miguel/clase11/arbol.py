@@ -41,8 +41,7 @@ class ArbolBinario(object):
     def inorden(self, nodo, profundidad):
         if nodo is not None:
             self.inorden(nodo.nodoDer, profundidad + 1)
-            espacios = profundidad * '\t'
-            print('{}{}'.format(espacios, nodo.valor))
+            print('{}{}'.format(profundidad * '\t', nodo.valor))
             self.inorden(nodo.nodoIzq, profundidad + 1)
 
 

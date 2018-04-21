@@ -31,17 +31,6 @@ datos que veremos en lo que resta del curso.
 - Para determinar lo anterior, es necesario tener un marco de trabajo formal
   donde podamos determinar el costo de esto.
 
-Vamos a utilizar cuatro definiciones básicas para el análisis de algoritmos:
-
-- $T(N) = O(f(N))$ si hay constantes positivas c y $n_0$ tales que $T(N) <=  cf(N)$
-  cuando $N >= n_{0}$
-- $T(N) = \Omega(g(N))$ Si hay constantes positivas c y $n_0$ tales que
-  $T(N)>=cg(N)$ cuando $N >= n_0$
-- $T(N) = \Theta(h(N))$ si y sólo si $T(N) = O(h(N))$ y $T(N) = \Omega(h(N))$
-- $T(N) = o(p(N))$ si para toda constante positiva c, existe un $n_0$ tal que
-  $T(N) < cp(N)$ cuando $N > n_0$. Menos formalmente, $T(N) = o(p(N))$ si
-  $T(N) = O(p(N))$ y $T(N) \neq \Theta(p(N))$
-
 ** Ejemplos
 
 - 7n - 3 es O(n)
