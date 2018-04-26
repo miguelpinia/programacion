@@ -44,8 +44,49 @@ class ArbolBinario(object):
             print('{}{}'.format(profundidad * '\t', nodo.valor))
             self.inorden(nodo.nodoIzq, profundidad + 1)
 
+    def is_empty(self):
+        return self.raiz is None
+
+    def _contains(self, x, raiz):
+        if raiz is None:
+            return False
+        if x == raiz.valor:
+            return True
+        elif x < raiz.valor:
+            return self._contains(x, raiz.nodoIzq)
+        else:
+            return self._contains(x, raiz.nodoDer)
+        return False
+
+    def contains(self, x):
+        return self._contains(x, self.raiz)
+
+    def _remove(self, x, raiz):
+        if raiz is None:
+            return None
+        if x > raiz.valor:
+            raiz.nodoDer = self._remove(x, raiz.nodoDer)
+        elif x < raiz.valor:
+            raiz.nodoIzq = self._remove(x, raiz.nodoIzq)
+        else:
+            if raiz.nodoIzq is None:
+                return raiz.nodoDer
+            elif raiz.nodoDer is None:
+                return raiz.nodoIzq
+            chiquitoDer = self._findMin(raiz.nodoDer)
+
+    def _findMin(self, raiz):
+        if raiz.nodoIzq is None:
+            return raiz
+        else:
+            return self._findMin(raiz.nodoIzq)
+
+    def remove(self, x):
+        if self.contains(x):
+
 
 a = ArbolBinario()
+print('El arbol es vacio?: {}'.format(a.is_empty()))
 a.insert(1)
 a.insert(2)
 a.insert(5)
@@ -57,3 +98,6 @@ a.insert(-3)
 a.insert(0)
 print('\n')
 a.inorden(a.raiz, 0)
+print('El arbol es vacio?: {}'.format(a.is_empty()))
+print('El valor -3 está en el arbol: {}'.format(a.contains(-3)))
+print('El valor 10 está en el arbol: {}'.format(a.contains(10)))
