@@ -1,0 +1,292 @@
+#-*- mode: org -*-
+
+* Recursion
+Es legal para una funcion llamar a otra funcion. 
+Lo mismo ocurre cuando una función se llama así misma. 
+
+Por ejemplo:
+#+BEGIN_SRC python
+def cuenta_regresiva(n):
+  if n == 0:
+    print("Despegue!")
+  else:
+    print(n)
+    cuenta_regresiva(n-1)
+#+END_SRC python
+
+La función countdown espera que el parámetro, n, sea un entero positivo. 
+Si n es 0, se imprime la palabra, "Despegue!". De lo contrario, imprime  n 
+y luego llama a una función llamada countdown pasando n-1 como argumento.
+
+¿Qué sucede si llamamos a esta función así:
+>>> cuenta_regresiva (3)
+
+La ejecución de la cuenta atrás comienza con n = 3, y como n no es 0, imprime el
+valor 3, y luego se llama a sí mismo ...
+La ejecución de la cuenta atrás comienza con n = 2, y como n no es 0, imprime el valor 2, y luego se llama a sí mismo ...
+La ejecución de la cuenta atrás comienza con n = 1, y como n no es 0, imprime el valor 1, y luego se llama a sí mismo ...
+La ejecución de la cuenta atrás comienza con n = 0, y dado que n es 0, imprime la palabra "Despegue!" Y luego regresa.
+La cuenta atrás que obtuvo n = 1 regresa. 
+La cuenta atrás que obtuvo n = 2 regresa.
+La cuenta atrás que obtuvo n = 3 regresa.
+Y luego estás de vuelta en main. 
+Entonces, el resultado total se ve como esto:
+3
+2
+1
+Despegue!
+
+El proceso de una función que se llama a sí misma es *recursión*, y se dice que dichas funciones son *recursivas*.
+
+* Recursión infinita
+Si una recursión nunca llega a un caso base, continúa realizando llamadas recursivas para siempre,
+y el programa nunca termina. 
+Esto se conoce como *recursión infinita*, y generalmente no se considera una buena idea. 
+
+Aquí hay un ejemplo de recursión infinita:
+#+BEGIN_SRC python
+def recurse ():
+    recurse ()
+#+END_SRC python
+
+En la mayoría de los entornos de programación, un programa con recursión infinita realmente no se ejecuta para siempre. 
+Python informa un mensaje de error cuando se alcanza la profundidad máxima de recursión:
+   Archivo "<stdin>", línea 2, en recurse
+   (Se omiten 98 repeticiones)
+   Archivo "<stdin>", línea 2, en recurse
+RuntimeError: se ha excedido la profundidad máxima de recursión
+
+Cuando se produce el error, hay 100 ejecuciones recurrentes en la pila!
+
+* Definiciones recursivas
+Una descripción de algo que se refiere a sí misma se llama definición *recursiva*. 
+
+En matemáticas ciertas definiciones recursivas se usan todo el tiempo. 
+
+El ejemplo recursivo clásico en matemáticas es la definición de la función factorial.
+Definimos el factorial de un valor como este:
+n! = n (n - 1) (n - 2). . . (1)
+15! = 5 (4) (3) (2) (1)
+
+Si implementamos un programa para calcular factoriales se puede utilizar un bucle simple que acumula el producto factorial.
+Al mirar el cálculo de 5! notamos que si eliminamos el 5 del frente, lo que queda es un cálculo de 4!. 
+En general, n! = n (n - 1)!. 
+
+Esta relación nos da otra forma de expresar lo que se entiende por factorial en general. 
+Aquí hay una definición recursiva:
+n! = 1 si n = 0 ó n(n - 1)! de otra manera
+
+Esta definición dice que el factorial de 0 es, por definición, 1, mientras que el factorial de cualquier otro número 
+se define como el número multiplicado por el factorial de uno menor que ese número.
+
+Aunque esta definición es recursiva, no es circular. De hecho, proporciona un método muy simple para calcular un factorial. 
+Considerando el valor de 4!, por definición, tenemos:
+4! = 4 (4 - 1)! = 4 (3!) 
+Pero ¿qué es 3!? Para averiguarlo, aplicamos la definición nuevamente.
+4! = 4 (3!) = 4 [(3) (3 - 1)!] = 4 (3) (2!)
+Ahora, por supuesto, tenemos que expandir 2!, que requiere 1!, que requiere 0!. 
+0! es simplemente 1, ese es el final de eso.
+
+Entonces,
+4! = 4 (3!) = 4 (3) (2!) = 4 (3) (2) (1!) = 4 (3) (2) (1) (0!) = 4 (3) (2) (1) (1) = 24
+Se puede ver que la definición recursiva no es circular porque cada aplicación nos obliga a solicitar 
+el factorial de un número más pequeño. 
+Finalmente llegamos a 0, que no requiere otra aplicación de la definición. 
+Esto se llama un *caso base para la recursión*. 
+Cuando finaliza la recursión, obtenemos una expresión cerrada que se puede calcular directamente. 
+
+Todas las buenas definiciones recursivas tienen estas características clave:
+1. Hay uno o más casos base para los cuales no se requiere recurrencia. 
+2. Todas las cadenas de recursión eventualmente terminan en uno de los casos base.
+
+La forma más sencilla de garantizar que se cumplan estas dos condiciones es asegurarse de que en cada recursión 
+siempre se produzca en una versión más pequeña del problema original. 
+
+Una versión muy pequeña del problema que puede resolverse sin recurrencia se convierte entonces en el caso base. 
+Así es exactamente como funciona la definición factorial.
+
+
+* Funciones recursivas
+El factorial se puede calcular utilizando un bucle con un acumulador. 
+Esa implementación tiene una correspondencia natural con la definición original de factorial. 
+
+¿Podemos también implementar una versión de factorial que sigue la definición recursiva?
+Si escribimos factorial como una función separada, la definición recursiva se traduce directamente en código.
+
+#+BEGIN_SRC python
+def factorial (n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
+#+END_SRC python
+
+La definición que se refiere a sí misma se convierte en una función que se llama a sí misma. 
+Esto se llama una *función recursiva*. 
+La función comprueba primero si estamos en el caso base n == 0 y, si es así, devuelve 1. 
+Si aún no estamos en el caso base, la función devuelve el resultado de multiplicar n por el factorial de n-1 . 
+El último se calcula mediante una llamada recursiva factorial(n-1).
+
+Cada llamada a una función inicia esa función de nuevo. 
+Eso significa que tiene su propia copia de cualquier valor local, incluidos los valores de los parámetros. 
+
+
+** Ejemplo: inversión de cadena
+Supongamos que queremos calcular el reverso de una cadena. 
+Una forma de manejar este problema de manera efectiva sería convertir la cadena en una lista de caracteres, 
+invertir la lista y convertir la lista en una cadena. 
+
+Sin embargo, al usar recursividad, podemos escribir fácilmente una función que calcule el reverso directamente, 
+sin tener que usar la representación de una lista.
+
+La idea básica es pensar en una cadena como un objeto recursivo; una cadena grande se compone de objetos más pequeños, que también son cadenas. 
+De hecho, una forma muy práctica de dividir virtualmente cualquier secuencia es pensar en ella 
+como un primer elemento individual que sucede seguido de otra secuencia. 
+
+En el caso de una cadena, podemos dividirla en su primer carácter y "todo lo demás". 
+Si invertimos el resto de la cadena y luego colocamos el primer carácter al final de eso, 
+tendremos el reverso de toda la cadena.
+
+Vamos a codificar ese algoritmo y ver qué pasa.
+#+BEGIN_SRC python
+def reverse (s):
+     return reverse (s[1:]) + s[0]
+#+END_SRC python
+
+La parte s[1:] da todos menos el primer carácter de la cadena. 
+Revertimos el corte (recursivamente) y luego concatenamos el primer carácter (s[0]) al final del resultado. 
+
+Si s es la cadena "abc", entonces s[1:] es la cadena "bc". 
+Al invertir esto se obtiene "cb" y al tachar en s[0] se obtiene "cba". 
+Eso es justo lo que queremos.
+
+Lamentablemente, esta función no funciona del todo. Esto es lo que sucede cuando lo pruebo:
+#+BEGIN_SRC python
+>>> reverse ("Hola")
+
+Rastreo (llamadas recientes más última):
+  Archivo "<stdin>", línea 1, ¿en?
+  Archivo "<stdin>", línea 2, en reversa
+  Archivo "<stdin>", línea 2, en reversa
+...
+  Archivo "<stdin>", línea 2, en reversa
+RuntimeError: se ha excedido la profundidad máxima de recursión
+#+END_SRC python
+
+Para construir una función recursiva correcta, necesitamos un caso base para el que no se requiera recurrencia; 
+de lo contrario, la recursión es circular. 
+
+Lo que hemos escrito es en realidad una recursión infinita. 
+Cada vez que se llama a una función, se requiere algo de memoria (para almacenar los parámetros y las variables locales), 
+por lo que este proceso no puede seguir por siempre. 
+Python lo detiene después de 1000 llamadas, la "profundidad máxima de recursión" predeterminada. 
+
+Al realizar recursiones en secuencias, el caso base suele ser una secuencia vacía o una secuencia que contiene solo un elemento. 
+Para nuestro problema podemos usar una cadena vacía como caso base, ya que una cadena vacía es su propia inversa. 
+
+Las llamadas recursivas para invertir siempre están en una cadena que tiene un carácter más corto que el original, 
+por lo que wventualmente terminaremos en una cadena vacía.
+
+#+BEGIN_SRC python
+def reverse (s):
+    if s == "":
+        return
+    else:
+        return reverse(s[1:]) + s[0]
+
+>>> reverse ("Hola")
+'aloH'
+#+END_SRC python
+
+
+* Recursión vs. iteración
+Hay algunas similitudes entre la iteración y la recursión. 
+Las funciones recursivas son una generalización de las iterativas. 
+Todo lo que se puede hacer con una iteración, también se puede hacer mediante una función recursiva. 
+Hay lenguajes de programación que usan recursividad exclusivamente. 
+Algunas cosas que se pueden hacer de forma muy simple utilizando recursividad son bastante difíciles de hacer con iteración.
+
+Muchos problemas tienes soluciones iterativas y recursivas. 
+Las versiones iterativas son probablemente un poco más rápidas porque las funciones recursivas 
+pero muchas veces es mas facil definir un problema en terminos de su recursión.
+
+La secuencia de Fibonacci es la secuencia de los números 1, 1, 2, 3, 5, 8,. . . 
+Comienza con dos 1s y los números sucesivos son la suma de los dos anteriores. 
+Una forma de calcular el enésimo valor de Fibonacci es usar un ciclo que produce sucesivos términos de la secuencia.
+
+Para calcular el próximo número de Fibonacci, siempre necesitamos hacer un seguimiento de los dos anteriores. 
+Podemos usar dos variables, curr y prev, para hacer un seguimiento de estos valores. 
+Entonces solo necesitamos un ciclo que los agregue para obtener el siguiente valor. 
+En ese punto, el valor anterior de curr se convierte en el nuevo valor de prev. 
+
+#+BEGIN_SRC python
+def loopfib (n):
+    curr = 1
+    prev = 1
+    for i in range(n-2):
+        curr = curr + prev 
+        prev = curr
+    return curr
+#+END_SRC python
+
+Tenga en cuenta que el ciclo solo da vueltas n-2 veces, porque los primeros dos valores ya han sido asignados 
+y no requieren una adición.
+La secuencia de Fibonacci también tiene una definición recursiva elegante. 
+
+#+BEGIN_SRC python
+Fib (n) = 1, n<3
+fib (n - 1) + fib (n - 2) de lo contrario 
+#+END_SRC python
+
+Podemos convertir esta definición recursiva directamente en una función recursiva.
+#+BEGIN_SRC python
+def fib (n):
+    if n<3:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+#+END_SRC python
+
+La recursión siempre está en valores más pequeños, y estan los casos base no recursivos. 
+Resulta que este es un algoritmo terriblemente ineficiente. 
+Si bien nuestra versión iterativa puede calcular fácilmente resultados para valores muy grandes de n (loopFib (50000)), 
+la versión recursiva solo es útil hasta alrededor de 30.
+
+El problema con esta formulación recursiva de la función de Fibonacci es que realiza muchos cálculos duplicados. 
+
+Para calcular fib(6). 
+Observe que fib(4) se calcula dos veces, fib(3) se calcula tres veces, fib(2) cuatro veces, etc. 
+Con un números grandes,  esta redundancia realmente se acumula!
+
+La recursividad es solo una herramienta más en la resolución de problemas. 
+A veces, una solución recursiva es buena, ya sea porque es más elegante o más eficiente que una versión iterativa; 
+en ese caso usa recursión. 
+A menudo, las versiones iterativas y recursivas son bastante similares; a veces simplemente no hay una buena solución.
+
+
+** Ejercicio
+Dada una palabra, construir todas las posibles permutaciones de los caracteres que contiene.
+Supongamos que la secuencia original es "abc", luego la cola de la cadena es "bc". 
+
+Generar la lista de todos las permutaciones de la cola nos da ["bc", "cb"], 
+ya que solo hay dos arreglos posibles de dos caracteres. 
+Para volver a agregar la primera letra, debemos colocarla en todas las posiciones posibles en 
+cada uno de estos dos anagramas más pequeños: ["abc", "bac", "bca", "acb", "cab", "cba"]. 
+
+Las primeros tres palabras provienen de colocar "a" en todos los lugares posibles en "bc", 
+y los segundos tres provienen de insertar "a" en "cb".
+
+>>> permutaciones("abc")
+['abc', 'bac', 'bca', 'acb', 'cab', 'cba']
+
+
+
+def anagrams(s):
+    if s == "":
+        return [s]
+    else:
+        ans = []
+        for w in anagrams(s[1:]):
+            for pos in range(len(w)+1):
+                ans.append(w[:pos]+s[0]+w[pos:])
+return ans

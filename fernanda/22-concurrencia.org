@@ -1,0 +1,134 @@
+#-*- mode: org -*-
+
+* Concurrencia
+La concurrencia es el arte de hacer que una computadora haga multiples cosas al mismo tiempo.
+La concurrencia es complicada, los conceptos basicos son simples, pero en la practica muchas cosas pueden salir mal.
+
+Sin embargo, es un mal necesario, pues para muchos proyecto es la unica forma de obtener el performance que se necesita.
+Imagina que un servidor web no pudiera responder la solicitud de un usario hasta que el anterior terminara!!
+
+* Threads o Hilos de Ejecucion
+La concurrencia permite que un programa siga su ejecucion aun en espera de que otra cosa suceda, como I/O, etc.
+Python y el sistema operativo se encargan de hacer este cambio entre procesos que se ejecutan de manera independiente
+pero simultaneamente.
+Estos objetos se llaman *threads*.
+
+#+BEGIN_SRC python
+from threading import Thread
+class InputReader(Thread):
+   def run(self):
+           self.line_of_text = input()
+
+print("Ingresa un texto y presiona enter: ")
+thread = InputReader()
+thread.start()
+count = result = 1
+while thread.is_alive():
+       result = count * count
+       count += 1
+print("calculando el cuadrado hasta {0} * {0} = {1}".format(count, result))
+print("mientras escribiste '{}'".format(thread.line_of_text))
+#+END_SRC python
+
+Este ejemplo ejecuta dos threads.
+Cada programa tiene un thread llamado el thread principal.
+El codigo que se ejecuta desde el principio se ejecuta en este thread, 
+mientras que el segundo se ejecuta en la clase InputReader.
+
+El codigo dentro de la funcion run() se ejecuta en un thread separado.
+El thread no se ejecuta hasta que se llama al metodo start().
+
+Si cambiamos la linea thread.start() por thread.run(), el thread nunca esta vivo y 
+el ciclo nunca se ejecuta.
+
+* Comparacion de tiempo 
+Vamos a comprar el tiempo que tarda un programa secuencial en ejecutar dos metodos 
+contra el mismo programa ejecutado en paralelo.
+
+Secuencia:
+#+BEGIN_SRC python
+import time
+ 
+#First Method
+def greet_them(people):
+    for person in people:
+        print("Hello Dear " + person + ". How are you?")
+        time.sleep(0.5)
+ 
+#Second Method
+def assign_id(people):
+    i = 1
+    for person in people:
+        print("Hey! {}, your id is {}.".format(person, i))
+        i += 1
+        time.sleep(0.5)
+ 
+ 
+people = ['Richard', 'Dinesh', 'Elrich', 'Gilfoyle', 'Gevin']
+ 
+t = time.time()
+ 
+greet_them(people)
+assign_id(people)
+ 
+print("Woaahh!! My work is finished..")
+print("I took " + str(time.time() - t))
+#+END_SRC python
+
+
+Usando Thread:
+Creamos un thread usando threading.Thread(target=YourFunction, args=ArgumentsToTheFunction).
+#+BEGIN_SRC python
+import time
+import threading
+
+# First Method
+def greet_them(people):
+    for person in people:
+        print("Hello Dear " + person + ". How are you?")
+        time.sleep(0.5)
+ 
+ 
+# Second Method
+def assign_id(people):
+    i = 1
+    for person in people:
+        print("Hey! {}, your id is {}.".format(person, i))
+        i += 1
+        time.sleep(0.5)
+ 
+ 
+people = ['Richard', 'Dinesh', 'Elrich', 'Gilfoyle', 'Gevin']
+ 
+t = time.time()
+ 
+#Created the Threads
+t1 = threading.Thread(target=greet_them, args=(people,))
+t2 = threading.Thread(target=assign_id, args=(people,))
+ 
+#Started the threads
+t1.start()
+t2.start()
+ 
+#Joined the threads
+# Stop function after completed the task
+t1.join()
+t2.join()
+ 
+print("Woaahh!! My work is finished..")
+print("I took " + str(time.time() - t))
+#+END_SRC python
+
+
+* Locks y Sincronizacion
+Cuando tenemos mas de un thread pueden haber muchos conflictos cuando 
+mas de un thread necesita acceso al mismo recurso al mismo tiempo.
+Por ejemplo, una cuenta bancaria.
+
+La solucion es usar cerraduras.
+Cuando un thread intenta usar un recurso que ya esta siendo usado, entonces el
+thread se pausara hasta que el recurso sea liberado.
+
+El metodo lock() pone un candado al objeto compartido.
+El metodo release() libera el candado cuando ya no es requerido.
+

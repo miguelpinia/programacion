@@ -1,0 +1,260 @@
+#-*- mode: org -*-
+
+* Números Aleatorios
+
+Los números aleatorios son útiles cuando hay incertidumbres en algún fenomeno que queremos estudiar.
+
+La idea en las simulaciones con números aleatorios es primero formular una descripción algorítmica del fenómeno. 
+
+Esta descripción se codifica, usando números aleatorios para imitar las características inciertas del fenómeno. 
+
+El programa necesita realizar un gran número de cálculos repetidos, y las salida del programa son aproximaciones, 
+
+pero la precisión generalmente es lo suficientemente buena para fines prácticos. 
+
+Python tiene un módulo *random* para la generación de números aleatorios. 
+
+La función random.random() genera un número aleatorio en el intervalo de medio abierto [0, 1).
+
+#+BEGIN_SRC python
+import random
+
+random.random()
+# 0.81550546885338104
+ 
+random.random()
+# 0.44913326809029852
+
+random.random()
+# 0.88320653116367454
+#+END_SRC
+
+Todos los cálculos de números aleatorios se basan en algoritmos determinísticos, 
+
+por lo que la secuencia de números no es verdaderamente aleatoria. 
+
+Sin embargo, la secuencia de números parece carecer de cualquier patrón, y por lo tanto pueden decir que son números aleatorios.
+
+
+** Semillas
+Para propósitos de pruebas del programa queremos obtener la misma secuencia de números aleatorios cada vez que ejecutamos el programa. 
+
+Esta funcionalidad se obtiene estableciendo una semilla en la generación de números aleatorios. 
+
+La semilla es un entero y establecida en la función random.seed:
+
+#+BEGIN_SRC python
+random.seed(2)
+
+["%.2f" % random.random() for i in range(7)] 
+# ["0.96", "0.95", "0.06", "0.08", "0.84", "0.74", "0.67"] 
+
+["%.2f" % random.random() for i in range(7)] 
+#[’0.31’, ’0.61’, ’0.61’, ’0.58’, ’0.16’, ’0.43’, ’0.39’]
+
+random.seed(2) # The same sequence
+["%.2f" % random.random() for i in range(7)] 
+#[’0.96’, ’0.95’, ’0.06’, ’0.08’, ’0.84’, ’0.74’, ’0.67’]
+#+END_SRC
+
+
+Si no damos una semilla, se establece una semilla basada en la hora actual. 
+
+Así, la semilla será diferente cada vez que ejecutamos el programa 
+
+y por lo tanto la secuencia de números aleatorios será diferente de una ejecución a otra. 
+
+
+** Números aleatorios uniformemente distribuidos
+Los números generados aleatoriamente se distribuyen igual entre 0 y 1, 
+
+lo que significa que no hay parte del intervalo [0,1) con más números aleatorios que otras partes. 
+
+La distribución de números aleatorios en este caso es *uniforme*. 
+
+La función random.uniform(a, b) genera números aleatorios uniformes en el intervalo abierto [a, b).
+
+Podemos generar números aleatorios en el intervalo [-1, 1) y visualizar la forma en que se distribuyen:
+#+BEGIN_SRC python
+import random
+import scitools.std as st
+
+random.seed(42)
+N=500 #No. of samples
+x = range(N)
+y = [random.uniform(-1,1) for i in x]
+st.plot(x, y, ’+’, axis=[0,N-1,-1.2,1.2])
+#+END_SRC
+
+
+** Visualización
+Es interesante ver cómo N números aleatorios en un intervalo [a, b] se distribuyen en el intervalo. 
+
+Para visualizar la distribución, podemos dividir el intervalo en subintervalos y mostrar la cantidad de números que hay en cada uno.
+
+Dividimos el intervalo [a, b) en n subintervalos de igual tamaño, cada uno de longitud h = (b - a) / n. 
+
+Estos subintervalos son llamados *bins*. Podemos graficar  N números aleatorios llamando la función random.random() N veces. 
+
+Podemos visualizar los intervalos como un diagrama de barras, llamado * histograma normalizado*. 
+
+La función  compute_histogram de scitools.std devuelve dos arreglos x y y tal que plot(x, y) grafica la función constante p(x) por trozos. 
+
+La gráfica es el histograma del conjunto de muestras aleatorias.
+
+#+BEGIN_SRC python
+from scitools.std import plot, compute_histogram 
+import random
+
+samples = [random.random() for i in range(100000)] 
+x, y = compute_histogram(samples, nbins=20) 
+plot(x, y)
+show()
+#+END_SRC
+
+
+** Gráficas vectorizadas 
+El módulo *random* en el paquete Numerical Python se puede utilizar para graficar un arreglo de números aleatorios:
+
+#+BEGIN_SRC python
+import numpy as np
+r = np.random.random() # one number between 0 and 1 
+r = np.random.random(size=10000) # array with 10000 numbers
+r = np.random.uniform(-1, 10) # one number between -1 and 10 
+r = np.random.uniform(-1, 10, size=10000) # array
+#+END_SRC
+
+Existen dos módulos *random* para tener en cuenta: 
+- Una en la biblioteca estándar de Python.
+- Uno en numpy. 
+
+Para graficar números distribuidos uniformemente, los dos módulos tienen la misma interfaz, 
+
+excepto que las funciones de módulo de numpy tiene un parámetro extra de tamaño. 
+
+Ambos módulos tienen una función *seed* para fijar una semilla.
+
+El dibujo vectorizado de números aleatorios usando módulo random de numpy es eficiente 
+
+ya que todos los números se dibujan al mismo tiempo en código C. 
+
+
+Se debe tener cuidado ya que ss fácil importar el método *random* :
+- from scitools.std import *  
+- from numpy import *
+
+Es necesario hacer un renombramineto para evitar confusiones.
+
+
+** Distribución Normal
+En algunas aplicaciones queremos números aleatorios que se agrupen alrededor de un valor específico m. 
+
+Esto significa que es más probable generar un número cercano a m que lejos de m. 
+
+Una distribución usada con esta propiedad es la distribution4 *Gaussiana o Normal*. 
+
+La distribución Normal tiene dos parámetros: el valor de la media m y la desviación estándar s. 
+
+Las desviación calcula el ancho de la distribución, en el sentido de que un pequeño valor de s, 
+
+hace que sea menos probable tener un número muy lejano del valor medio, y un gran valor de s 
+
+tiene más probabilidades de estar lejos del valor medio.
+
+
+#+BEGIN_SRC python
+import random
+r = random.normalvariate(m, s) #Genera un único n;umero aleatorio
+
+# Generar arreglos de longitud N
+import numpy as np
+r = np.random.normal(m, s, size=N)
+r = np.random.randn(N) # mean=0, std.dev.=1
+#+END_SRC
+
+El siguiente programa genera N  números aleatorios con distribución normal, calcula la media y la desviación estándar y grafica el histograma:
+
+#+BEGIN_SRC python
+import numpy as np
+import matplotlib as plt
+
+m = 0
+s = 1
+N = 100000
+
+np.random.seed(12)
+samples = np.random.normal(m, s, N)
+print(np.mean(samples), np.std(samples))
+
+plt.figure()
+plt.title = str(N) + "samples of Gaussian/normal numbers on (0,1)"
+n, bins, patches = plt.hist(samples, bins=20, histtype="step")
+plt.show()
+input("wait")
+#+END_SRC
+
+Cuando N es más grande se asemeja a una campana.
+
+
+** Funciones con enteros aleatorios
+El módulo random de Python tiene una función randint(a, b) para obtener un número entero en [a, b].
+
+#+BEGIN_SRC python
+import random
+r = random.randint(a, b)
+#+END_SRC
+
+La función numpy.random.randint(a, b, N) permite construir arreglos de longitud N de números enteros [a,b).
+#+BEGIN_SRC python
+import numpy as np
+r = np.random.randint(a, b+1, N)
+#+END_SRC
+
+
+** Escoger elementos aleatorios de una lista
+#+BEGIN_SRC python
+a = ["coche", "computadora", "pluma", "pelota"]
+
+# Selecciona un elemento aleatoriamente de a.
+re = random.choice(a)
+
+# Equivalente a :
+re = a[random.randint(0, len(a)-1)]
+
+# Permuta una lista
+random.shuffle(a)
+#+END_SRC
+
+** Ejemplo: Repartir una mano de un deck
+#+BEGIN_SRC python
+def make_deck():
+ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+suits = ['C', 'D', 'H', 'S']
+deck = []
+for s in suits:
+     for r in ranks:
+             deck.append(s + r)
+     random.shuffle(deck)
+     return deck
+
+def deal_hand(n, deck):
+     hand = [deck[i] for i in range(n)]
+     del deck[:n]
+     return hand, deck
+#+END_SRC
+
+
+* Ejercicio: Lanzar un dado
+
+1. Hacer un programa que simule el lanzamiento de un dado N veces y contar cuántas veces sacamos cada número.
+2. Haz una versión vectorizada del código.
+3. Haz una función que compare qué tan rápido es el método vectorizado con respecto al anterior. Para ello pruebalo con 10^6 lanzamientos. 
+
+import random
+N= 500 # N experiments
+M = 0 # no of times we get 6 eyes 
+for i in xrange(N):
+      outcome = random.randint(1, 6)
+      if outcome == 6:
+          M += 1
+print ’Got six %d times out of %d’ % (M, N)

@@ -1,0 +1,119 @@
+#-*- mode: org -*-
+
+* Leyendo entradas de consola
+La función input() permite leer un texto escrito en consola.
+
+Podemos hacer un programa que convierta temperatura de grados centrigrados a fahrenheit
+y pedirle al usuario que introduzca la temperatura que desea convetir.
+#+BEGIN_SRC python
+C = input(’Ingresa los grados celsius: ’)
+C = float(C)
+F = (9./5)*C + 32
+print(F)
+#+END_SRC python
+
+Como la funcion input() siempre regresa una cadena,
+es necesario convertirla a un entero para poder hacer operaciones matematicas.
+
+La función eval() toma una cadena como argumento y la evalua como una expresion de Python.
+Asi, podemos convertir una entrada en codigo ejecutable de Python.
+
+#+BEGIN_SRC python
+r = eval(’1+2’)
+print(r)
+# 3
+print(type(r))
+# <type ’int’>
+
+r = eval(’[1, 6, 7.5]’)
+print(r)
+# [1, 6, 7.5]
+print(type(r))
+# <type ’list’>
+#+END_SRC python
+
+La ventaja es que interpreta la funcion y la convierte en el tipo de objeto correcto.
+
+#+BEGIN_SRC python
+i1 = eval(raw_input(’Give input: ’))
+i2 = eval(raw_input(’Give input: ’))
+r = i1 + i2
+print ’%s + %s becomes %s\n with value %s’ % \
+        (type(i1), type(i2), type(r), r)
+
+Give input: 4
+Give input: 3.1
+<type ’int’> + <type ’float’> becomes <type ’float’> with value 7.1
+
+Give input: [-1, 3]
+Give input: [9,-2,0,0]
+<type ’list’> + <type ’list’> becomes <type ’list’> with value [-1, 3, 9, -2, 0, 0]
+#+END_SRC python
+
+
+* Leyendo de la Consola sin preguntar
+Normalmente los programas evitar la espera de hacerle preguntar al usuario.
+En lugar de eso, las entradas del programa se proporcionan desde la linea de comandos.
+
+El modulo sys tiene una lista argv con todos los argumentos de la linea de comandos.
+El primer argumento en lista sys.argv siempre es el nombre del programa, sys.argv[0].
+El resto de los argumentos corresponden al indice de la lista.
+
+#+BEGIN_SRC python
+import sys
+C = float(sys.argv[1])
+F = 9.0*C/5 + 32
+print(F)
+
+celsius.py 21
+>> 69.8
+#+END_SRC python
+
+* Numero variable de argumentos
+Supongamos que tenemos un programa que suma numeros y los toma desde la linea de comandos.
+Sin embargo, no sabemos cuantos numeros vamos a recibir y no siempre sera la misma cantidad.
+
+#+BEGIN_SRC python
+import sys
+s=0
+for arg in sys.argv[1:]:
+      number = float(arg)
+      s += number
+t = "La suma de "
+for arg in sys.argv[1:]:
+      t = arg + " "
+print(t + "es " +  s)
+#+END_SRC python
+
+Hasta ahora requerimos que los argumentos sean escritos en la secuencia correcta.
+Quisieramos poder asociar los argumentos con un nombre, de la forma <-option value>.
+Unix hace un gran usa de los argumentos desde linea de comandos.
+Por ejemplo: ls -l -h 
+
+Consideremos la formula para calcular la posicion de un objeto que es aventado.
+s(t) = s0 + v0*t + 1/2at^2
+
+Esta formula requiere de las variables s0, v0, t, a.
+Queremos un programa que reciba --s0, --v0, --a, --t en la linea de comandos donde la secuancia sea arbitraria.
+
+El modulo argparse permite leer pares <-option value>.
+
+#+BEGIN_SRC python
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(’--v0’, ’--initial_velocity’, type=float, default=0.0, help=’initial velocity’)
+parser.add_argument(’--s0’, ’--initial_position’, type=float, default=0.0, help=’initial position’)
+parser.add_argument(’--a’, ’--acceleration’, type=float, default=1.0, help=’acceleration’)
+parser.add_argument(’--t’, ’--time’, type=float, default=1.0, help=’time’)
+
+args = parser.parse_args()
+
+s0 = args.s0; 
+v0 = args.v0 
+a = args.a 
+t = args.t 
+s = s0 + v0*t + 0.5*a*t**2
+print(s)
+
+# python3 location.py --t 3 --s0 1 --v0 1 --a 0.5
+#+END_SRC python

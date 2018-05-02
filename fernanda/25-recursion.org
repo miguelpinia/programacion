@@ -1,0 +1,124 @@
+#-*- mode: org -*-
+
+* Funciones recursivas
+Pedro Infante: "Yo soy yo y no me parezca a naiden".
+
+El adjetivo *recursivo* significa: ir hacia atras, y eso es lo que hace una funcion recursiva,
+corre hacia atras o hacia si mismo.
+
+La recursion es una forma de programar o codificar un problema en donde una funcion se llama a si misma una o mas veces.
+Una funcion recursiva debe tener una *condicion de terminacion*.
+Una funcion recursiva termina si en cada llamada recursiva la entrada del problema decrece hasta llegar a un caso base soluble.
+Un *caso base* es cuando el problema puede ser resuelto sin hacer mas llamadas recursivas.
+Si el caso base nunca se alcanza, entonces el programa entrara en un loop infinito y nunca terminará.
+
+La *recursion* es un metodo donde la solucion del problema esta basada en resolver instancias mas pequenas del mismo problema.
+
+** Factorial
+Funcion Iterativa:
+#+BEGIN_SRC python
+def iterative_factorial(n):
+    result = 1
+    for i in range(2,n+1):
+        result *= i
+    return result
+#+END_SRC python
+
+Funcion Recursiva:
+#+BEGIN_SRC python
+def factorial(n):
+    if n == 1:
+        return 1
+    else:
+        return n * factorial(n-1)
+
+# Trackeando los pasos de ejecucion
+def factorial(n):
+    print("factorial has been called with n = " + str(n))
+    if n == 1:
+        return 1
+    else:
+        res = n * factorial(n-1)
+        print("intermediate result for ", n, " * factorial(" ,n-1, "): ",res)
+        return res	
+
+print(factorial(5))
+#+END_SRC python
+
+* Fibonacci
+La secuancia de numero de Fibonacci es:
+0,1,1,2,3,5,8,13,21,34,55,89, ... 
+
+Los numeros de fibonacci se definen:
+Fn = Fn-1 + Fn-2 
+F0 = 0
+F1 = 1 
+
+Funcion Iterativa:
+#+BEGIN_SRC python
+def fibi(n):
+    a, b = 0, 1
+    for i in range(n):
+        a, b = b, a + b
+    return a
+#+END_SRC python
+
+Funcion Recursiva:
+#+BEGIN_SRC python
+def fib(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+#+END_SRC python
+
+La version iterativa de la funcion de Fibonacci es mas rapida en ejecucion que la version iterativa.
+Vamos a comprobar que tan mas rapida es:
+
+#+BEGIN_SRC python
+from timeit import Timer
+
+for i in range(1,41):
+       s = "fibR(" + str(i) + ")"
+       t1 = Timer(s,"from bar import fibR")
+       time1 = t1.timeit(3)
+       s = "fibI(" + str(i) + ")"
+       t2 = Timer(s,"from bar import fibI")
+       time2 = t2.timeit(3)
+       print("n=%2d, fibR: %8.6f, fibI:  %7.6f, percent: %10.2f" % (i, time1, time2, time1/time2))
+
+#+END_SRC python
+
+time1 es el tiempo en segundos que toma hacer 3 llamadas a la funcion fib()
+Llamar fib(20) 3 veces, toma 14 milisegundos.
+
+*** Que esta pasando?
+Calculando el arbol de ejecucion para fib(5) podemos ver que el subarbol fib(2) aparece 3 veces y el subarbol fib(3) dos veces.
+Eso significa que nuestra recusion no recuerda los valores calculados anteriormente y los tiene que recalcular cada vez.
+
+Podemos implementar una "memoria" para nuestra version recursiva utilizando un diccionario, donde se guarden los valores previos.
+
+#+BEGIN_SRC python
+memo = {0:0, 1:1}
+def fibm(n):
+    if not n in memo:
+        memo[n] = fibm(n-1) + fibm(n-2)
+    return memo[n]
+#+END_SRC python
+
+Podemos compararlo de nuevo y vemos que ahora si ya es mas eficiente!
+
+** Ejemplo
+Una funcion recursiva para f(n)=3*n
+#+BEGIN_SRC python
+def mult3(n):
+    if n == 1:
+        return 3
+    else:
+        return mult3(n-1) + 3
+
+for i in range(1,10):
+    print(mult3(i))
+#+END_SRC python

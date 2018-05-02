@@ -1,0 +1,221 @@
+#-*- mode: org -*-
+
+* Integración de Monte Carlo
+Métodos para  calcular \int_a^b f(x)dx.
+
+** Integración Estandar.
+La aproximación de \int_a^b f(x)dx es:
+
+\[ (b-a) \frac{1}{n} \sum_{i=1}^n f(x_i)
+
+donde x_1, ..., x_n son números aletorios distribuidos uniformemente en [a,b].
+
+Una primera aproximación:
+
+#+BEGIN_SRC python
+import random
+
+def MCint(f, a, b, n): s=0
+     for i in range(n):
+         x = random.uniform(a, b)
+         s += f(x)
+     I = (float(b-a)/n)*s
+     return I
+#+END_SRC
+
+Necesitamos una *n* grande para obtener buenos resultados, asi que vectorizamos la función:
+
+#+BEGIN_SRC python
+import numpy as np
+
+def MCint_vec(f, a, b, n):
+     x = np.random.uniform(a, b, n)
+     s = np.sum(f(x))
+     I = (float(b-a)/n)*s
+     return I
+#+END_SRC 
+
+
+Vamos a probar el método de integración Monte Carlo con la función f(x) = 3x + 2, integrada de 1 a 2.
+
+Quremos ver cómo se incrementa la calidad de la aproximación conforme aumenta n. 
+
+Para dibujar la gráfica de la evolución de la aproximación, debemos almacenar los valores intermedios de I
+
+y tomar en cuenta el número de evaluaciones de la función. 
+
+Esto requiere un método ligeramente modificado:
+
+#+BEGIN_SRC python
+def MCint3(f, a, b, n, N=100): 
+    s=0
+    # Store every N intermediate integral approximations in an array I where I[k-1] corresponds to k function evals.
+    # and record the corresponding k value.
+    I_values = []
+    k_values = []
+    for k in range(1, n+1):
+         x = random.uniform(a, b)
+         s += f(x)
+         if k % N == 0: # store only every N values of the approximation.
+             I = (float(b-a)/k)*s
+             I_values.append(I)
+             k_values.append(k)
+    return k_values, I_values
+#+END_SRC
+
+Aplicando el método a la función \int_1^2 (2+3x) dx es:
+
+#+BEGIN_SRC python
+import matplotlib as plt
+
+def f1(x):
+     return 2 + 3*x
+
+k, I = MCint3(f1, 1, 2, 1000000, N=10000)
+
+error = 6.5 - np.array(I)
+plt.title="Monte Carlo integration"
+plt.xlabel="n"
+plt.ylabel="error"
+plt.plot(k, error)
+plt.show()
+input("wait")
+#+END_SRC
+
+
+** Calculo del área usando puntos aleatorios
+Dada una región geométrica G en el plano y un cuadro B delimitado por [x_L, x_H] × [y_L, y_H]. 
+
+Una forma de calcular el área de G es dibujar N puntos aleatorios dentro de B y contar cuántos de ellos, M, se encuentran dentro de G. 
+
+El área de G es entonces la fracción M / N (fracción de G del área B) por el área de B, (x_H - x_L) (y_H - y_l). 
+
+Es un juego de dardos donde se guarda el número de tiros que hay en el interior de G, si cada tiro pega uniformemente dentro B.
+
+La integral es el área bajo la curva y = f(x) y por encima del eje x, entre x = a y x = b. 
+
+Tenemos el rectángulo B,
+
+B={(x,y)| a \leq x \leq b, 0 \leq y \leq m}
+
+El algoritmo para calcular el área bajo de la curva es dibujar N puntos al azar dentro de B y contar cuántos de ellos, H, 
+
+están por encima del eje X y por debajo de la curva y = f(x) curva.
+
+El área o integral se estima como \frac{M}{N} m (b-a)
+
+#+BEGIN_SRC python
+def MCint_area(f, a, b, n, m):
+   below = 0 # counter for no of points below the curve 
+   for i in range(n):
+         x = random.uniform(a, b)
+         y = random.uniform(0, m)
+         if y <= f(x):
+             below += 1
+   area = below/float(n)*m*(b-a)
+   return area
+#+END_SRC
+
+
+La implementación vectorizada:
+
+#+BEGIN_SRC python
+import numpy as np
+
+def MCint_area_vec(f, a, b, n, m):
+     x = np.random.uniform(a, b, n)
+     y = np.random.uniform(0, m, n)
+     below = y[y < f(x)].size
+     area = below/float(n)*m*(b-a)
+     return area
+#+END_SRC
+
+
+* Caminatas aleatorias en Una Dimensión
+
+Imagina que tenemos algunas partículas que se mueven al azar, a la derecha o a la izquierda. 
+
+Podemos lanzar una moneda para decidir el movimiento de cada partícula y cada movimiento es una unidad de longitud.
+ 
+Podemos demostrar matemáticamente que en un tiempo finito cada partícula llegará a su destino.
+
+#+BEGIN_SRC python
+import random
+import numpy
+
+np = 4     # No. of particles
+ns = 100   # No. of steps
+
+positions = numpy.zeros(np)  # all particles start at x=0
+HEAD = 1  # Mov. Right
+TAIL = 2  # Mov. Left
+
+for step in range(ns):
+   for p in range(np):
+      coin = random.randint(1,2)  # flip coin 
+      if coin == HEAD:
+         positions[p] += 1 # one unit length to the right 
+      elif coin == TAIL:
+         positions[p] -= 1 # one unit length to the left
+#+END_SRC
+
+
+* Caminatas aleatorias en Dos Dimensiones
+Una caminata aleatoria en dos dimensiones avanza ya sea hacia el norte, sur, oeste o al este, cada uno con probabilidad de 1/4. 
+
+Para demostrar este proceso, se introducen coordenadas X, Y de n_p partículas y dibujamos números aleatorios entre 1, 2, 3, o 4 
+
+para determinar el movimiento. 
+
+#+BEGIN_SRC python
+import random
+import sys
+import numpy
+import matplotlib.pyplot as plt
+
+def random_walk_2D(np, ns, plot_step): 
+   xpositions = numpy.zeros(np)
+   ypositions = numpy.zeros(np)
+   # extent of the axis in the plot:
+   xymax = 3*numpy.sqrt(ns); xymin = -xymax
+   NORTH=1; SOUTH=2; WEST=3; EAST=4 #constants
+      
+   for step in range(ns):
+      for i in range(np):
+         direction = random.randint(1, 4)
+         if direction == NORTH:
+            ypositions[i] += 1
+         elif direction == SOUTH:
+            ypositions[i] -= 1
+         elif direction == EAST:
+            xpositions[i] += 1
+         elif direction == WEST:
+            xpositions[i] -= 1
+        
+   # Plot just every plot_step steps
+   if (step+1) % plot_step == 0:
+      plt.plot(xpositions, ypositions, "ko")
+    return xpositions, ypositions
+
+# main program:
+random.seed(10)
+np = 3000
+ns = 400
+plot_step = 20
+plt.show()
+x, y = random_walk_2D(np, ns, plot_step)
+
+input("wait")
+#+END_SRC
+
+
+* Ejercicio
+1D caminata aleatoria hasta que se alcanza un punto arbitrario.
+
+Modifica la caminata aleatoria en dos dimensión, para contar la cantidad de pasos que toma a una partícula llegar a un punto x = x_p dado. 
+
+Entonces,  np = 1
+
+Obtener x_p de la línea de comandos. 
+
+También da los resultados cuando el número de pasos es: 5, 50, 5000, 50000.

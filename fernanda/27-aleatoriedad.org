@@ -1,0 +1,127 @@
+#-*- mode: org -*-
+
+* Cálculo de probabilidades
+Usando teoría de la probabilidad se puede calcular la probabilidad de que ocurra un evento, por ejemplo
+
+la probabilidad de que se obtenga una bola negra cuando se toman tres bolas de un sombrero 
+
+con cuatro bolas negras, seis bolas blancas y tres bolas verdes. 
+
+Por desgracia, los cálculos pueden llegar a ser imposibles si el problema se cambia ligeramente. 
+
+Hay una simple "forma numérica" de probabilidades de computación que es aplicable en general a los problemas de incertidumbre.
+
+** Simulación del método Monte Carlo
+Supongamos que realizamos N experimentos en los que el resultado de cada experimento es aleatorio. 
+
+Supongamos que un evento ocurre M veces. Una estimación de la probabilidad del evento es  M / N. 
+
+La estimación se vuelve más precisa cuando N se incrementa, y la probabilidad exacta se alcanza cuando N → ∞. 
+
+Los programas que se ejecutan un gran número de experimentos y registrar los resultados se llaman *Simulaciones*. 
+
+La técnica de dejar que un programa realice un montón de experimentos basados ​​en números aleatorios, se denomina *simulación de Monte Carlo*. 
+
+Esta técnica es útil en problemas donde hay un comportamiento incierto o aleatorio. 
+
+Por ejemplo:
+
+- El mercado de valores tiene una variación aleatoria que debe ser tomado en cuenta cuando se trata de optimizar las inversiones. 
+
+- En la ingeniería en alta mar, los cambios ambientales de viento, corrientes y olas muestran un comportamiento aleatorio. 
+
+- En la física nuclear y de partículas, el comportamiento aleatorio es fundamental según la mecánica cuántica y la física estadística. 
+
+La simulación de Monte Carlo es la única manera de resolver problemas estadísticos.
+
+
+** Ejemplo: Sacar pelotas de un sombrero
+Supongamos que hay 12 pelotas en un sombrero: 
+- 4 rojas
+- 4 azules
+- 4 negras
+
+Queremos hacer un programa que saque tres bolas al azar del sombrero. 
+
+Representamos el conjunto de pelotas como una lista:
+
+#+BEGIN_SRC python
+colors = ("black", "red", "blue") # (tuple of strings) 
+hat = []
+for color in colors:
+     for i in range(4):
+         hat.append(color)
+#+END_SRC
+
+
+Debemos sacar n pelotas al azar sin devolver las pelotas al sombrero.
+
+Hay 3 formas de hacer esto:
+1. hat.remove(color)
+2. Sacamos un índice al azar con randint y sacamos el elemento hat[índice] 
+3. Utilizar hat.pop(índice)
+
+#+BEGIN_SRC python
+def draw_ball(hat):
+      color = random.choice(hat)
+      hat.remove(color)
+      return color, hat
+
+def draw_ball(hat):
+      index = random.randint(0, len(hat)-1)
+      color = hat[index]
+      del hat[index]
+      return color, hat
+
+  def draw_ball(hat):
+      index = random.randint(0, len(hat)-1)
+      color = hat.pop(index)
+      return color, hat
+#+END_SRC
+
+Podemos extender el experimento y preguntar: 
+
+¿Cuál es la probabilidad de sacar dos o más pelotas negras de un sombrero con 12 bolas:
+- 4 negros
+- 4 rojas
+- 4 azules? 
+
+Con este fin, realizamos experimentos N, contarmos cuántas veces M se obtienen dos o más pelotas negras 
+
+y estimarmos la probabilidad como M/N. 
+
+Cada experimento consiste en:
+1. Hacer la lista del sombrero
+2. Sacar un número de pelotas
+3. Contar cuántas pelotas negras obtuvimos. Esto se puede hacer con el método de listas: hat.count('negro').
+
+#+BEGIN_SRC python
+# Run experiments
+n = 5  #No. balls drawn
+N = 4000  #No. experiments
+M=0 #No of successes 
+for e in range(N):
+    hat = new_hat() # the n balls we draw
+    balls = []
+    for i in range(n):
+          color, hat = draw_ball(hat)
+          balls.append(color)
+    if balls.count(’black’) >= 2: # at least two black balls?
+          M += 1
+print("Probability:", float(M)/N)
+#+END_SRC
+
+
+
+
+* Ejercicio: Adivina el número
+
+La computadora escoge un número secreto y el jugador deberá adivinar el número. 
+
+Para cada conjetura, la computadora indicará si el número esta alto o bajo.
+
+Dejamos que la computadora escoja un entero aleatorio en un intervalo conocido por el jugador, digamos[1, 100]. 
+
+El programa le pide al jugador que adivine el número, lee la conjetura, y comprueba si la conjetura es mayor o menor que el número.
+
+Al final se le indica al jugador en cuántos intentos adivinó el número.
