@@ -1,0 +1,67 @@
+#+title: Árboles AVL
+#+author: Miguel Piña
+#+date: [2018-05-04 vie 06:01]
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+Los árboles AVL son árboles binarios que cumplen una condición de balanceo. Esta
+condición de balanceo debe ser fácil de mantener y debe asegurar que la
+profundidad del árbol es O(log N), así como que el peso del nodo izquierdo de
+cualquier nodo debe ser a lo más uno más/menos el peso del nodo derecho.
+
+El peso de un nodo lo definimos como la longitud más larga desde el nodo hasta
+una de sus hojas. Veamos algunos ejemplos:
+
+[[file:avl1.png]]
+
+[[file:avl2.png]]
+
+[[file:avl3.png]]
+
+* Balance
+
+Para mantener el balance dentro del árbol, cuando se inserta o se elimina un
+nodo, hay que hacer que el árbol cumpla con la condición de balanceo mencionada
+al principio y esto lo podemos hacer con una operación llamada rotación.
+
+Para considerar realizar la rotación sobre un nodo, hay que considerar algunos
+casos en los que después de insertar o eliminar, el árbol queda desbalanceado o
+lo que es lo mismo, el peso de sus nodos hijos difieren por dos. Estos casos
+son:
+
+- Una inserción hacia el subárbol izquierdo del hijo izquierdo del nodo actual.
+- Una inserción hacia el subárbol derecho del hijo izquierdo del nodo actual.
+- Una inserción hacia el subárbol izquierdo del hijo derecho del nodo actual.
+- Una inserción hacia el subárbol derecho del hijo derecho del nodo actual.
+
+Los casos 1 y 4 son equivalentes y los casos 2 y 3 igual. Entonces, desde una
+perspectiva teórica, tenemos dos casos base, sin embargo, desde un enfoque de
+programación, tenemos 4 casos.
+
+El primer caso lo resolvemos con una rotación simple, ya que la rotación ocurre
+"afuera" del árbol, es decir, izquierda-izquierda o derecha-derecha. Mientras
+que el segundo caso lo vamos a resolver con una rotación doble, ya que ocurre
+dentro del árbol, es decir, izquierda-derecha o derecha-izquierda.
+
+* Rotación simple
+
+[[file:avl4.png]]
+
+[[file:avl5.png]]
+
+[[file:avl6.png]]
+
+[[file:avl7.1.png]]
+
+[[file:avl7.2.png]]
+
+[[file:avl7.3.png]]
+
+[[file:avl7.4.png]]
+
+* Doble rotación
+
+[[file:avl8.png]]
+
+[[file:avl9.png]]
+
+[[file:avl10.png]]
