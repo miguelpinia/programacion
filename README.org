@@ -19,6 +19,7 @@ git clone https://github.com/miguelpinia/programacion.git
 * Tareas
 
 - [[file:Tareas/tarea1.org][Tarea 1]]
+- [[file:Tareas/tarea2.org][Tarea 2]]
 
 * Prácticas
 
