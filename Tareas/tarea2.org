@@ -1,0 +1,112 @@
+#+title: Tarea 2
+#+author: Fernanda Sanchez, Miguel Piña
+#+date: [2018-05-08 mar 09:04]
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+* Pregunta:
+
+Imagina que vas al supermercado y hay 4 cajeros automaticos.  Cuando las
+personas están esperando para pagar sus productos, deben formar 4 líneas (una en
+cada cajero) o una sola línea?
+
+* Explicacion:
+
+Al considerar una pregunta como esta, uno debe decidir una medida de
+comparación.  Una medida razonable en este caso es: tiempo de espera promedio en
+la fila.
+
+La pregunta puede entonces ser reformulada como:
+
+Para minimizar el tiempo promedio de espera en la fila para cuatro cajeros
+automáticos, ¿deben las personas formar una sola fila o cuatro?
+
+Utilizaremos lo que se conoce como simulación "impulsada por eventos", es decir,
+identificaremos los eventos y los simularemos.
+
+Otro punto importante es ¿cómo se simula la llegada de las personas a los
+cajeros automáticos?  Afortunadamente, la investigación muestra que las llegadas
+que encajan en una distribución de Poisson proporcionan respuestas razonables a
+esta clase de preguntas.
+
+
+* Simulación de eventos
+
+Las simulaciones se basan en el tiempo y la simulación basada en eventos se basa
+en eventos que se consideran ordenados de acuerdo al tiempo en que ocurren los
+acontecimientos.  Si el evento 'A' ocurrirá en el instante t = 4 y el evento 'D'
+ocurrirá en el instante t = 2, entonces se procesará primero el evento 'D' (en
+el instante t = 2) antes de procesar el evento 'A'.
+
+Podemos mantener una Cola de eventos ordenados por el momento en que sucederán,
+asi cuando necesitemos el siguiente evento para procesarlo, lo encontraremos al
+principio de la Cola. Podemos sacarlo de la lista y luego procesarlo.
+
+Cada vez que agregamos un nuevo evento a la Cola, se agregara al final de la cola.
+
+¿Qué eventos pueden ocurrir en nuestros cajeros automáticos? Hay dos:
+
+- Llegada: un evento de llegada (que llamaremos 'A') es el evento cuando una
+  persona llega a la línea para que esa persona se forme al final de la línea.
+- Salida: un evento de salida (que etiquetaremos como 'D') es el evento cuando
+  una persona ya termino en el cajero y sale.
+
+Una pregunta razonable es: ¿no hay un evento cuando alguien llega al frente de
+la línea y deja la línea para ir a un cajero disponible? Sí, pero ese evento
+ocurre cuando un cajero automático está disponible, que pasa a ser exactamente
+cuando alguien dejó el cajero automático, es decir, sucede cuando ocurre un
+evento 'D'.
+
+
+* Tiempo de Atención
+
+Otra cosa importante a considerar es el tiempo que cualquier persona pasa en el
+cajero. Una persona puede pasar un un par de minutos, mientras que otra persona
+podría pasar quince minutos.
+
+El tiempo de espera es el tiempo desde que llegamos al final de la fila hasta
+que llegamos a un cajero.  Para ello debemos recordar el tiempo en que llego la
+persona a la fila y el tiempo en que llego al cajero y restarlos.
+
+Para calcular el tiempo promedio en la fila necesitamos sumar el tiempo total en
+espera gastado por todos y dividir entre el numero de personas que estaban en la
+fila.  Si alguien llegó a encontrar una fila vacía y un cajero disponible, su
+tiempo de espera es cero.
+
+
+* Salida del programa
+
+Después de cada evento:
+
+- Mostrar el evento que sucedió: Para cada salida de evento, el tiempo en que
+  ocurrio el evento y el tipo de evento.
+- Salida de cada cajero: salida del número de cajero (1,2,3, o 4) y el tiempo de
+  servicio.
+
+Al final de la ejecución del programa:
+
+- Proporciona el tiempo promedio que las personas estan en cada fila.
+
+
+Deberan utilizar la clase Cola que se implemento en clase para similar la fila
+del supermercado.
+
+La simulación deberá crear clientes en un tiempo aleatorio y asignarlos a la
+cola adecuada (en el caso en el que hay varias colas, deberán asignarlos la cola
+mas corta).
+
+Despues deberán esperar un tiempo aleatorio en lo que el cajero atiende al
+cliente, y luego obtener a la siguiente persona.
+
+
+* Entregables:
+
+- Deberan entregar un archivo tarea2.tgz que contenga: el codigo fuente de su
+  solucion y un archivo Readme.
+
+Asegurencen de incluir nombre de los participantes y comentarios de codigo.
+
+- Deberán presentar un reporte en latex y pdf indicando cual de las opciones es
+  la mejor, argumentando porque.
+- Entrega vía email a las direcciones: fernanda@ciencias.unam.mx y
+  miguel_pinia@ciencias.unam.mx con subject: Programación 2018-2: Tarea 2
+- Fecha de entrega: 16 de mayo de 2018.
