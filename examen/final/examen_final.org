@@ -1,4 +1,4 @@
-#+title: Programación - Examen 2
+#+title: Programación - Examen final
 #+author: Miguel Piña
 #+date: [2018-05-21 lun 09:53]
 
