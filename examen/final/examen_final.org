@@ -140,13 +140,13 @@ Hay seis tareas asociadas con este proyecto:
 6. Resultados de la producción
    Debe proporcionar otros dos tipos de salida además de la precisión.
 
-
-Primero, reporta las estadísticas que se han recopilado (los promedios malignos
-y benignos, valor del punto medio del clasificador, etc).  En segundo lugar,
-debes proporcionar algunos comentarios sobre un paciente.  El sistema debe
-solicitar un ID de paciente del conjunto de prueba, y luego dar los valores del
-paciente del conjunto de pruebas, el valor de corte del clasificador para ese
-valor y el valor particular, así como el diagnóstico global del paciente.
+   Primero, reporta las estadísticas que se han recopilado (los promedios
+   malignos y benignos, valor del punto medio del clasificador, etc).  En
+   segundo lugar, debes proporcionar algunos comentarios sobre un paciente.  El
+   sistema debe solicitar un ID de paciente del conjunto de prueba, y luego dar
+   los valores del paciente del conjunto de pruebas, el valor de corte del
+   clasificador para ese valor y el valor particular, así como el diagnóstico
+   global del paciente.
 
 
 * Descripción y especificación del proyecto
