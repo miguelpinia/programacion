@@ -114,12 +114,11 @@ Hay seis tareas asociadas con este proyecto:
    estadísticamente sólido, pero sirve como un buen ejercicio de programación, así
    como una buena introducción al problema de la predicción de clases.
 
-
 3. Crear un conjunto de prueba.
    Un conjunto de pruebas es un conjunto de registros donde:
 
-   (1) los registros no fueron utilizados para entrenar al clasificador y
-   (2) sabemos el valor de la clase.
+   a. los registros no fueron utilizados para entrenar al clasificador y
+   b. sabemos el valor de la clase.
 
    Dado que el clasificador no ha visto estos registros todavía pero sabemos la
    verdadera clase, podemos probar la precisión del clasificador en estos nuevos
