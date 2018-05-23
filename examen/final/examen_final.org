@@ -118,6 +118,7 @@ Hay seis tareas asociadas con este proyecto:
    Un conjunto de pruebas es un conjunto de registros donde:
 
    a. los registros no fueron utilizados para entrenar al clasificador y
+
    b. sabemos el valor de la clase.
 
    Dado que el clasificador no ha visto estos registros todavía pero sabemos la
